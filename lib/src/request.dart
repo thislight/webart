@@ -45,6 +45,8 @@ class Request{
      Config get C => app.C;
 
      String get path => raw.handlerPath;
+
+     String toString() => "Request@$hashCode { method=$method, url=$url, path=$path }";
 }
 
 
@@ -57,6 +59,9 @@ class Response{
     Response(this.request);
 
     shelf.Response done(){
+        if (isEmpty){
+            notFound();
+        }
         return new shelf.Response(statusCode, body: body,headers: headers);
     }
 
@@ -89,4 +94,6 @@ class Response{
             return JSON.encode(body);
         }
     }
+
+    bool get isEmpty => (statusCode == null) && (body == null);
 }

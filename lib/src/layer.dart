@@ -1,5 +1,9 @@
 library web.layer;
 import "dart:async" show Future;
+import "package:logging/logging.dart" show Logger;
+import "./logging.dart" show getLogger;
+
+final Logger _logger = getLogger("Layer");
 
 abstract class Layer {
     /// This class is base of all of Layers
@@ -32,6 +36,8 @@ class FunctionalLayer implements Layer {
     Future apply(List args, [Map<Symbol, dynamic> namedArgs]) async{
         await this.run(args,namedArgs);
     }
+
+    String toString() => "FunctionalLayer@$hashCode { function=$function }";
 
 }
 
@@ -87,7 +93,10 @@ class LayerState {
     Map<String, dynamic> memories;
 
     LayerState(this.pchain){
+        _rawPointer = -1;
+        memories = <String,dynamic>{};
         this.memories.addAll(this.pchain.global);
+        _logger.info("New state created: LayerState@${hashCode}");
     }
 
     Future start(List args, [Map<Symbol, dynamic> namedArgs]) async{
@@ -101,18 +110,15 @@ class LayerState {
         if ((rawPointer + 1) > pchain.list.length){
             return null;
         }
+        _logger.info("Next layer: point $rawPointer, layer $pointer, state $this");
         return pointer;
     }
 
     Future forEach(LayerForEachHandler h) async{
-        while (true) {
-            var layer = next();
-            if (layer){
-                await h(layer);
-            } else {
-                break;
-            }
-        }
+        await pchain.list.forEach((Layer layer) async {
+            next();
+            await h(layer);
+        });
     }
 
     Layer get pointer => pchain.list[rawPointer];

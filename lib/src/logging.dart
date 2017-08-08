@@ -14,7 +14,7 @@ class SimpleStringFormatter implements FormatterBase<String> {
 }
 
 
-final InMemoryListAppender appender = new InMemoryListAppender(new SimpleStringFormatter());
+final PrintAppender appender = new PrintAppender(new SimpleStringFormatter());
 
 
 Logger getLogger(String name){
