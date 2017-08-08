@@ -6,6 +6,7 @@ import "./logging.dart" show LoggingLayer;
 import "./config.dart" show Config;
 import "./request.dart" show Request;
 import "./plugin.dart" show Plugin;
+import "./route.dart" show Router;
 import "package:shelf/shelf.dart" as shelf;
 import "package:shelf/shelf_io.dart" as io;
 
@@ -13,12 +14,14 @@ import "package:shelf/shelf_io.dart" as io;
 class Application {
     LayerManager lman;
     List<shelf.Middleware> middlewares;
+    Router router;
     Config C;
 
     Application(this.C){
         lman = new LayerManager();
         middlewares = <shelf.Middleware>[];
         this._initLayer();
+        this._loadConfigsRoute();
     }
 
     shelf.Response handler(shelf.Request raw){
@@ -39,6 +42,7 @@ class Application {
     }
 
     Future start(String address, int port) async{
+        _addRouteLayer();
         return io.serve(buildHandler(),address,port);
     }
 
@@ -53,5 +57,21 @@ class Application {
 
     void use(Plugin p){
         p.init(this);
+    }
+
+    void _addRouteLayer(){
+        lman.chain.add(router.layer);
+    }
+
+    void _loadRouteSpecFromConfig(){
+        C["route"].forEach((String key,Function target){
+            router.add(key, target);
+        });
+    }
+
+    void _loadConfigsRoute(){
+        if (C.rawMap.containsKey("route")){
+            _loadRouteSpecFromConfig();
+        }
     }
 }
