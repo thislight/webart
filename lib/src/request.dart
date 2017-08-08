@@ -44,7 +44,7 @@ class Request{
 
      Config get C => app.C;
 
-     get path => raw.handlerPath;
+     String get path => raw.handlerPath;
 }
 
 
