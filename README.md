@@ -13,7 +13,7 @@
 ## Usage
 This example show the basic usage of web.dart
 ````dart
-import "package:web.dart/web.dart" as web;
+import "package:web.dart/web.dart";
 
 main(){
     // Create app
