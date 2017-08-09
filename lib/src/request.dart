@@ -6,6 +6,9 @@ import "./context.dart" show Context;
 import "./web.dart" show Application;
 import "./config.dart" show Config;
 import "dart:async" show Future;
+import "./logging.dart" show getLogger;
+
+final _logger = getLogger("Request");
 
 class Request{
      shelf.Request _raw;
@@ -47,6 +50,8 @@ class Request{
      String get path => raw.handlerPath;
 
      String toString() => "Request@$hashCode { method=$method, url=$url, path=$path }";
+
+     String get handlerPath => raw.handlerPath;
 }
 
 
@@ -55,6 +60,7 @@ class Response{
     Request request;
     int statusCode;
     Map<String, String> headers;
+    bool _isFinish;
 
     Response(this.request);
 
@@ -62,7 +68,7 @@ class Response{
         if (isEmpty){
             notFound();
         }
-        return new shelf.Response(statusCode, body: body,headers: headers);
+        return new shelf.Response(statusCode, body: body, headers: headers);
     }
 
     void ok(var body){
@@ -96,4 +102,10 @@ class Response{
     }
 
     bool get isEmpty => (statusCode == null) && (body == null);
+
+    void finish(){
+        _logger.info("Request@${request.hashCode} finished");
+        _isFinish = true;
+    }
+    bool get isFinish => _isFinish;
 }

@@ -29,7 +29,9 @@ class Context{
     Request request;
     Map<String, Function> contextCreators;
 
-    Context(this.request);
+    Context(this.request){
+        contextCreators = <String, Function>{};
+    }
 
     dynamic call(String s){
         return contextCreators[s](request);

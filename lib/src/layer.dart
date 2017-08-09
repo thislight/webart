@@ -5,6 +5,7 @@ import "./logging.dart" show getLogger;
 
 final Logger _logger = getLogger("Layer");
 
+
 abstract class Layer {
     /// This class is base of all of Layers
     /// [Layer.apply] must be async
@@ -85,6 +86,8 @@ class LayerChain {
 
 
 typedef void LayerForEachHandler(Layer layer);
+typedef void GoFunction();
+typedef void Go();
 
 
 class LayerState {
@@ -99,10 +102,19 @@ class LayerState {
         _logger.info("New state created: LayerState@${hashCode}");
     }
 
+    Function buildGoFunction(List args, [Map<Symbol, dynamic> namedArgs]){
+        return () async{
+            Layer l = next();
+            if (l != null){
+                await l.apply(args,namedArgs);
+            }
+        };
+    }
+
     Future start(List args, [Map<Symbol, dynamic> namedArgs]) async{
-        forEach((Layer layer) async{
-            await layer.apply(args,namedArgs);
-        });
+        Function go = buildGoFunction(args,namedArgs);
+        args.add(go);
+        await go();
     }
 
     Layer next(){

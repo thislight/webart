@@ -1,6 +1,6 @@
 library web;
 import "dart:io" show File;
-import "dart:async" show Future;
+import "dart:async" show Future,Timer,Completer,scheduleMicrotask;
 import "./layer.dart";
 import "./logging.dart" show LoggingLayer,getLogger;
 import "./config.dart" show Config;
@@ -11,7 +11,24 @@ import "package:shelf/shelf.dart" as shelf;
 import "package:shelf/shelf_io.dart" as io;
 import "package:logging/logging.dart" show Logger;
 
-final Logger logger = getLogger("Application");
+
+final Logger _logger = getLogger("Application");
+
+
+Future<shelf.Response> waitForResponse(Request request){
+    Completer<shelf.Response> completer = new Completer();
+    scheduleMicrotask( () =>
+    new Timer.periodic(const Duration(milliseconds: 1), (Timer timer){
+        if(request.res.isFinish){
+            timer.cancel();
+            shelf.Response rawRes = request.response.done();
+            _logger.info("Got raw response@${rawRes.hashCode}");
+            completer.complete(rawRes);
+        }
+    })
+    );
+    return completer.future;
+}
 
 
 class Application {
@@ -26,14 +43,14 @@ class Application {
         this._initRouter();
         this._initLayer();
         this._loadConfigsRoute();
+        this._usePreloadPlugin();
     }
 
-    shelf.Response handler(shelf.Request raw){
+    Future<shelf.Response> handler(shelf.Request raw) async{
         LayerState currState = lman.newState;
         Request request = new Request(raw,currState,this);
-        logger.info("${request.method} => ${request.path}");
         currState.start([request]);
-        return request.response.done();
+        return await waitForResponse(request);
     }
 
     Future<String> getErrorPage(int code) async {
@@ -55,6 +72,7 @@ class Application {
     }
 
     buildHandler(){
+        _logger.info("Building handler");
         var pl = const shelf.Pipeline();
         middlewares.forEach((shelf.Middleware m){
             pl = pl.addMiddleware(m);
@@ -64,6 +82,7 @@ class Application {
     }
 
     void use(Plugin p){
+        _logger.info("Using Plugin@${p.hashCode}");
         p.init(this);
     }
 
@@ -85,5 +104,8 @@ class Application {
 
     void _initRouter(){
         this.router = new Router(<RouteSpec>[]);
+    }
+
+    void _usePreloadPlugin(){
     }
 }
