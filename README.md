@@ -16,6 +16,7 @@ This example show the basic usage of web.dart
 import "package:web.dart/web.dart" as web;
 
 main(){
+    // Create app
     Application app = new Application(
         new Config(<String, dynamic>{
             "route":{
@@ -23,8 +24,14 @@ main(){
             }
         })
     );
+
+    // Start app
+    app.start("127.0.0.1", 8088).then((_){
+        print("Server started");
+    });
 }
 
+// Define handler
 void helloWorldHandler(Request request){
     request.res.ok("Hello World");
 }
