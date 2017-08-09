@@ -1,5 +1,4 @@
 import "package:web.dart/web.dart";
-import "dart:async" show Future;
 
 main(){
     var app = new Application(
