@@ -1,12 +1,13 @@
 import "package:web.dart/web.dart";
 import "dart:async" show Future;
 
-Future main() async{
+main(){
     var app = new Application(
         new Config(<String, dynamic>{
             "route":{
-                "/": _homePage,
-                "/hello{?name}": _helloPage,
+                "": _homePage,
+                "hello/{name}": _helloPage,
+                "query{?q}": _queryPage,
             }
         })
     );
@@ -22,4 +23,9 @@ void _homePage(Request request){
 void _helloPage(Request request){
     String name = request.context("urlparam")["name"];
     request.res.ok("Hello, $name");
+}
+
+void _queryPage(Request request){
+    String qstr = request.context("urlparam")["q"];
+    request.res.ok("You are finding $qstr");
 }
