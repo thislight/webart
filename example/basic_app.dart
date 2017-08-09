@@ -7,6 +7,7 @@ main(){
                 "": _homePage,
                 "hello/{name}": _helloPage,
                 "query{?q}": _queryPage,
+                "json{?key,lang}": _getJsonPage,
             }
         })
     );
@@ -27,4 +28,20 @@ void _helloPage(Request request){
 void _queryPage(Request request){
     String qstr = request.context("urlparam")["q"];
     request.res.ok("You are finding $qstr");
+}
+
+void _getJsonPage(Request request){
+    Map data = {
+        "data1": {
+            "zh": "你好",
+            "en": "Hello",
+        },
+        "data2": {
+            "zh": "再见",
+            "en": "Godbye",
+        }
+    };
+    Map<String, String> param = request.context("urlparam");
+
+    request.res.ok({ "result": data[param["key"]][param["lang"]]});
 }
