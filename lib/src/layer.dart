@@ -20,8 +20,18 @@ abstract class Layer {
 
 class FunctionalLayer implements Layer {
     Function function;
+    String _name;
 
-    FunctionalLayer(this.function);
+    FunctionalLayer.withName(this._name,this.function);
+
+    FunctionalLayer(this.function){
+        _name = "FunctionalLayer";
+    }
+
+    String get name => _name;
+        set name(String v) => _name = v;
+    
+    void setName(String v) => name = v;
 
     Future run(List args, [Map<Symbol, dynamic> namedArgs]) async{
         if (args == null) {
@@ -38,7 +48,7 @@ class FunctionalLayer implements Layer {
         await this.run(args,namedArgs);
     }
 
-    String toString() => "FunctionalLayer@$hashCode { function=$function }";
+    String toString() => "$name@$hashCode { function=$function }";
 
 }
 
