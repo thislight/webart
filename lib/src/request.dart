@@ -10,6 +10,8 @@ import "./logging.dart" show getLogger;
 
 final _logger = getLogger("Request");
 
+typedef void RequestHandler(Request request);
+
 class Request{
      shelf.Request _raw;
      Response _res;
@@ -52,6 +54,12 @@ class Request{
      String toString() => "Request@$hashCode { method=$method, url=$url, path=$path }";
 
      String get handlerPath => raw.handlerPath;
+
+     void on(String method, RequestHandler handler){
+         if (method.toLowerCase() == this.method.toLowerCase()){
+             handler(this);
+         }
+     }
 }
 
 
