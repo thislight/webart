@@ -26,8 +26,10 @@ void _helloPage(Request request){
 }
 
 void _queryPage(Request request){
-    String qstr = request.context("urlparam")["q"];
-    request.res.ok("You are finding $qstr");
+    if (request.only(["get"])){
+        String qstr = request.context("urlparam")["q"];
+        request.res.ok("You are finding $qstr");
+    }
 }
 
 void _getJsonPage(Request request){
@@ -42,6 +44,5 @@ void _getJsonPage(Request request){
         }
     };
     Map<String, String> param = request.context("urlparam");
-
-    request.res.ok({ "result": data[param["key"]][param["lang"]]});
+    request.on("get",(_) => request.res.ok({ "result": data[param["key"]][param["lang"]]}));
 }
