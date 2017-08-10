@@ -43,7 +43,7 @@ class Request{
      Future<String> get body => raw.readAsString();
 
      dynamic asJson() async => JSON.decode(await body);
-
+     
      Response get response => _res;
      Response get res => response;
 
@@ -58,6 +58,16 @@ class Request{
      void on(String method, RequestHandler handler){
          if (method.toLowerCase() == this.method.toLowerCase()){
              handler(this);
+         }
+     }
+
+     bool only(List<String> allowedMethods){
+         allowedMethods.map((String e) => e.toLowerCase());
+         if (allowedMethods.contains(this.method.toLowerCase())){
+             return true;
+         } else {
+             this.res.error(400);
+             return false;
          }
      }
 }
