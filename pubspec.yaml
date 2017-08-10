@@ -2,6 +2,7 @@ name: web.dart
 version: 0.1.0
 dependencies:
   shelf: ^0.6.8
+  shelf_redis_session_store: ^0.0.2
   uri_template: ^0.6.0
   yaml: ^2.1.12
   bwu_log: ^0.1.2
