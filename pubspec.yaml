@@ -6,4 +6,4 @@ dependencies:
   uri_template: ^0.6.0
   yaml: ^2.1.12
   bwu_log: ^0.1.2
-  uuid: ^0.5.3
+  flake_uuid: "^0.1.1"
