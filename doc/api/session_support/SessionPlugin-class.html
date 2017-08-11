@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="API docs for the Plugin class from the web library, for the Dart programming language.">
-  <title>Plugin class - web library - Dart API</title>
+  <meta name="description" content="API docs for the SessionPlugin class from the session_support library, for the Dart programming language.">
+  <title>SessionPlugin class - session_support library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
@@ -31,10 +31,10 @@
           <button id="sidenav-left-toggle" type="button">&nbsp;</button>
           <ol class="breadcrumbs gt-separated hidden-xs">
             <li><a href="index.html">web.dart</a></li>
-            <li><a href="web/web-library.html">web</a></li>
-            <li class="self-crumb">Plugin</li>
+            <li><a href="session_support/session_support-library.html">session_support</a></li>
+            <li class="self-crumb">SessionPlugin</li>
           </ol>
-          <div class="self-name">Plugin</div>
+          <div class="self-name">SessionPlugin</div>
           <form class="search navbar-right" role="search">
             <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
           </form>
@@ -48,19 +48,19 @@
       <div class="col-sm-12 contents">
         <ol class="breadcrumbs gt-separated visible-xs">
           <li><a href="index.html">web.dart</a></li>
-          <li><a href="web/web-library.html">web</a></li>
-          <li class="self-crumb">Plugin</li>
+          <li><a href="session_support/session_support-library.html">session_support</a></li>
+          <li class="self-crumb">SessionPlugin</li>
         </ol>
         <div class="title-description">
           <h1 class="title">
-            <span class="kind">abstract class</span> Plugin
+            <span class="kind">class</span> SessionPlugin
           </h1>
         </div>
         <ul class="subnav">
-          <li><a href="web/Plugin-class.html#instance-properties">Properties</a></li>
-          <li><a href="web/Plugin-class.html#constructors">Constructors</a></li>
-          <li><a href="web/Plugin-class.html#operators">Operators</a></li>
-          <li><a href="web/Plugin-class.html#instance-methods">Methods</a></li>
+          <li><a href="session_support/SessionPlugin-class.html#instance-properties">Properties</a></li>
+          <li><a href="session_support/SessionPlugin-class.html#constructors">Constructors</a></li>
+          <li><a href="session_support/SessionPlugin-class.html#operators">Operators</a></li>
+          <li><a href="session_support/SessionPlugin-class.html#instance-methods">Methods</a></li>
         </ul>
       </div> <!-- /col -->
     </div> <!-- /row -->
@@ -73,57 +73,58 @@
 
   <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
     <h5><a href="index.html">web.dart</a></h5>
-    <h5><a href="web/web-library.html">web</a></h5>
+    <h5><a href="session_support/session_support-library.html">session_support</a></h5>
 
     <ol>
     
-      <li class="section-title"><a href="web/web-library.html#typedefs">Typedefs</a></li>
-      <li><a href="web/Go.html">Go</a></li>
-      <li><a href="web/GoFunction.html">GoFunction</a></li>
-      <li><a href="web/LayerForEachHandler.html">LayerForEachHandler</a></li>
-      <li><a href="web/RequestHandler.html">RequestHandler</a></li>
     
-      <li class="section-title"><a href="web/web-library.html#properties">Properties</a></li>
-      <li><a href="web/appender.html">appender</a></li>
-      <li><a href="web/HandlerLogger.html">HandlerLogger</a></li>
-      <li><a href="web/LoggingLayer.html">LoggingLayer</a></li>
-    
-      <li class="section-title"><a href="web/web-library.html#functions">Functions</a></li>
-      <li><a href="web/getLogger.html">getLogger</a></li>
-      <li><a href="web/value2type.html">value2type</a></li>
-      <li><a href="web/waitForResponse.html">waitForResponse</a></li>
+      <li class="section-title"><a href="session_support/session_support-library.html#properties">Properties</a></li>
+      <li><a href="session_support/SessionLayer.html">SessionLayer</a></li>
     
     
-      <li class="section-title"><a href="web/web-library.html#classes">Classes</a></li>
-      <li><a href="web/Application-class.html">Application</a></li>
-      <li><a href="web/Config-class.html">Config</a></li>
-      <li><a href="web/Context-class.html">Context</a></li>
-      <li><a href="web/FunctionalLayer-class.html">FunctionalLayer</a></li>
-      <li><a href="web/Layer-class.html">Layer</a></li>
-      <li><a href="web/LayerChain-class.html">LayerChain</a></li>
-      <li><a href="web/LayerManager-class.html">LayerManager</a></li>
-      <li><a href="web/LayerState-class.html">LayerState</a></li>
-      <li><a href="web/Plugin-class.html">Plugin</a></li>
-      <li><a href="web/Request-class.html">Request</a></li>
-      <li><a href="web/Response-class.html">Response</a></li>
-      <li><a href="web/SimpleStringFormatter-class.html">SimpleStringFormatter</a></li>
+    
+      <li class="section-title"><a href="session_support/session_support-library.html#classes">Classes</a></li>
+      <li><a href="session_support/DefaultSessionAdapter-class.html">DefaultSessionAdapter</a></li>
+      <li><a href="session_support/Session-class.html">Session</a></li>
+      <li><a href="session_support/SessionAdapter-class.html">SessionAdapter</a></li>
+      <li><a href="session_support/SessionManager-class.html">SessionManager</a></li>
+      <li><a href="session_support/SessionPlugin-class.html">SessionPlugin</a></li>
     
     </ol>
   </div>
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
 
+    <section class="desc markdown">
+      <p>Apply change of session support to <a href="web/Application-class.html">Application</a>.
+Must use after <code>CookiePlugin</code>(<code>CookiePlugin</code> will be used when <a href="web/Application-class.html">Application</a> init).<br>
+It is not a preload plugin, you must use it by yourself.<br>
+For example:</p>
+<pre class="language-dart prettyprint"><code class="language-dart">Application app = new Application(...);
+app.use(new SessionPlugin());
+</code></pre>
+<p>This plugin will get a <a href="session_support/SessionAdapter-class.html">SessionAdapter</a> from config item "sessionAdapter", if no set,
+will use <a href="session_support/DefaultSessionAdapter-class.html">DefaultSessionAdapter</a>, it store values to memories by dart's <code>Map</code> object.</p>
+<p>You can get <a href="session_support/Session-class.html">Session</a> object in handlers.<br>
+For example:</p>
+<pre class="language-dart prettyprint"><code class="language-dart">void exampleHandler(Request req){
+    Session session = req.context("session");
+    ...Do Something Else...
+}
+</code></pre>
+    </section>
     
     <section>
       <dl class="dl-horizontal">
-
-
-
-        <dt>Implemented by</dt>
-        <dd><ul class="comma-separated clazz-relationships">
-          <li><a href="cookie_support/CookiePlugin-class.html">CookiePlugin</a></li>
-          <li><a href="session_support/SessionPlugin-class.html">SessionPlugin</a></li>
+        <dt>Inheritance</dt>
+        <dd><ul class="gt-separated dark clazz-relationships">
+          <li>Object</li>
+          <li><a href="web/Plugin-class.html">Plugin</a></li>
+          <li>SessionPlugin</li>
         </ul></dd>
+
+
+
 
       </dl>
     </section>
@@ -135,8 +136,8 @@
       <h2>Constructors</h2>
 
       <dl class="constructor-summary-list">
-        <dt id="Plugin" class="callable">
-          <span class="name"><a href="web/Plugin/Plugin.html">Plugin</a></span><span class="signature">()</span>
+        <dt id="SessionPlugin" class="callable">
+          <span class="name"><a href="session_support/SessionPlugin/SessionPlugin.html">SessionPlugin</a></span><span class="signature">()</span>
         </dt>
         <dd>
           <p></p>
@@ -149,7 +150,7 @@
 
       <dl class="properties">
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="web/Plugin/hashCode.html">hashCode</a></span>
+          <span class="name"><a href="session_support/SessionPlugin/hashCode.html">hashCode</a></span>
           <span class="signature">&#8594; int</span>
         </dt>
         <dd class="inherited">
@@ -157,7 +158,7 @@
           <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="web/Plugin/runtimeType.html">runtimeType</a></span>
+          <span class="name"><a href="session_support/SessionPlugin/runtimeType.html">runtimeType</a></span>
           <span class="signature">&#8594; Type</span>
         </dt>
         <dd class="inherited">
@@ -171,7 +172,7 @@
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="web/Plugin/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="parameter-name">other</span></span>)
+          <span class="name"><a href="session_support/SessionPlugin/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
         </dt>
@@ -186,7 +187,7 @@
       <h2>Methods</h2>
       <dl class="callables">
         <dt id="init" class="callable">
-          <span class="name"><a href="web/Plugin/init.html">init</a></span><span class="signature">(<wbr><span class="parameter" id="init-param-app"><span class="type-annotation"><a href="web/Application-class.html">Application</a></span> <span class="parameter-name">app</span></span>)
+          <span class="name"><a href="session_support/SessionPlugin/init.html">init</a></span><span class="signature">(<wbr><span class="parameter" id="init-param-app"><span class="type-annotation"><a href="web/Application-class.html">Application</a></span> <span class="parameter-name">app</span></span>)
             <span class="returntype parameter">&#8594; void</span>
           </span>
         </dt>
@@ -195,7 +196,7 @@
           
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="web/Plugin/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name"><a href="session_support/SessionPlugin/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
         </dt>
@@ -204,7 +205,7 @@
           <div class="features">inherited</div>
 </dd>
         <dt id="toString" class="callable inherited">
-          <span class="name"><a href="web/Plugin/toString.html">toString</a></span><span class="signature">(<wbr>)
+          <span class="name"><a href="session_support/SessionPlugin/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
         </dt>
@@ -218,27 +219,27 @@
   </div> <!-- /.main-content -->
 
   <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
-    <h5>Plugin</h5>
+    <h5>SessionPlugin</h5>
     <ol>
     
     
     
-      <li class="section-title"><a href="web/Plugin-class.html#constructors">Constructors</a></li>
-      <li><a href="web/Plugin/Plugin.html">Plugin</a></li>
+      <li class="section-title"><a href="session_support/SessionPlugin-class.html#constructors">Constructors</a></li>
+      <li><a href="session_support/SessionPlugin/SessionPlugin.html">SessionPlugin</a></li>
     
       <li class="section-title inherited">
-        <a href="web/Plugin-class.html#instance-properties">Properties</a>
+        <a href="session_support/SessionPlugin-class.html#instance-properties">Properties</a>
       </li>
-      <li class="inherited"><a href="web/Plugin/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="web/Plugin/runtimeType.html">runtimeType</a></li>
+      <li class="inherited"><a href="session_support/SessionPlugin/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="session_support/SessionPlugin/runtimeType.html">runtimeType</a></li>
     
-      <li class="section-title inherited"><a href="web/Plugin-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="web/Plugin/operator_equals.html">operator ==</a></li>
+      <li class="section-title inherited"><a href="session_support/SessionPlugin-class.html#operators">Operators</a></li>
+      <li class="inherited"><a href="session_support/SessionPlugin/operator_equals.html">operator ==</a></li>
     
-      <li class="section-title"><a href="web/Plugin-class.html#instance-methods">Methods</a></li>
-      <li><a href="web/Plugin/init.html">init</a></li>
-      <li class="inherited"><a href="web/Plugin/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="web/Plugin/toString.html">toString</a></li>
+      <li class="section-title"><a href="session_support/SessionPlugin-class.html#instance-methods">Methods</a></li>
+      <li><a href="session_support/SessionPlugin/init.html">init</a></li>
+      <li class="inherited"><a href="session_support/SessionPlugin/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited"><a href="session_support/SessionPlugin/toString.html">toString</a></li>
     </ol>
   </div><!--/.sidebar-offcanvas-->
 
