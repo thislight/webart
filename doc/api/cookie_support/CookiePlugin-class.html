@@ -92,7 +92,7 @@
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
 
     <section class="desc markdown">
-      <p>Plugin for cookie support</p>
+      <p>Plugin for cookie support</p><ul><li>The plugin is broken!!!! DO NOT USE IT NOW! *  Because the cookie part of "shelf_redis_session_store" is no use.  Before anyone incluing me fix it, it will leave preload plugin.  :-( thisLight 2017/08/11</li></ul>
 <p>You can get cookies from "cookies" in <code>Context</code>, for example <code>request.context("cookies")</code>.</p>
 <p>But this type is <code>Map&lt;String, Cookie&gt;</code> not <code>Map&lt;String, String&gt;</code> (<code>Cookie</code> class from <code>dart:io</code>).</p>
 <p>the key of this cookie plugin implements by <a href="https://pub.dartlang.org/packages/shelf_redis_session_store">shelf_redis_session_store</a>.</p>

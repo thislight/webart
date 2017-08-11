@@ -1,5 +1,8 @@
 name: web.dart
 version: 0.1.0
+description: A lightweight web framework for dart
+homepage: https://gitlab.com/thislight/web.dart
+author: thisLight
 dependencies:
   shelf: ^0.6.8
   shelf_redis_session_store: ^0.0.2
