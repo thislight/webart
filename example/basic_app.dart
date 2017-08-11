@@ -1,5 +1,5 @@
-import "package:web.dart/web.dart";
-import "package:web.dart/session_support.dart" show SessionPlugin,Session;
+import "package:web_dart/web.dart";
+import "package:web_dart/session_support.dart" show SessionPlugin,Session;
 
 main(){
     var app = new Application(
