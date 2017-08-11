@@ -1,4 +1,5 @@
 import "package:web.dart/web.dart";
+import "package:web.dart/session_support.dart" show SessionPlugin,Session;
 
 main(){
     var app = new Application(
@@ -8,9 +9,12 @@ main(){
                 "hello/{name}": _helloPage,
                 "query{?q}": _queryPage,
                 "json{?key,lang}": _getJsonPage,
+                "count": _countPage,
+                "cookietest{?value}": _cookieTestPage,
             }
         })
     );
+    app.use(new SessionPlugin());
     app.start("127.0.0.1", 8088).then((_){
         print("Server started");
     });
@@ -45,4 +49,29 @@ void _getJsonPage(Request request){
     };
     Map<String, String> param = request.context("urlparam");
     request.on("get",(_) => request.res.ok({ "result": data[param["key"]][param["lang"]]}));
+}
+
+
+/// This handler no work
+void _countPage(Request request){
+    Session session = request.context("session");
+    int count;
+
+    if (!session.storage.containsKey("count")){
+        count = 0;
+    } else {
+        count = session["count"];
+    }
+
+    count++;
+    session["count"] = count;
+
+    request.res.ok({ "current": count});
+}
+
+/// This handler no work
+void _cookieTestPage(Request request){
+    String data = request.context("urlparam")["data"];
+    request.context("cookies")["data"] = data;
+    request.res.ok("ok");
 }

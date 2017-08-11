@@ -108,6 +108,6 @@ class Application {
     }
 
     void _usePreloadPlugin(){
-        this.use(new CookiePlugin());
+        // this.use(new CookiePlugin()); Cookie Plugin no work
     }
 }

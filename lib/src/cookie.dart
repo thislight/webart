@@ -3,19 +3,21 @@ import "package:shelf_redis_session_store/shelf_cookie.dart" show cookieMiddlewa
 import "./plugin.dart" show Plugin;
 import "./layer.dart" show FunctionalLayer, Go;
 import "./request.dart" show Request;
-import "package:shelf/shelf.dart" as shelf;
 import 'web.dart' show Application;
 
 
 final FunctionalLayer CookieLayer = new FunctionalLayer((Request req, Go go){
-    shelf.Request rawReq = req.raw;
-    req.context.register("cookies", rawReq.context["cookies"]);
+    req.context.register("cookies", (Request req) => req.raw.context["cookies"]);
     go();
 })
     ..setName("CookieLayer");
 
 
 /// Plugin for cookie support
+/// * The plugin is broken!!!! DO NOT USE IT NOW! *  
+/// Because the cookie part of "shelf_redis_session_store" is no use.  
+/// Before anyone incluing me fix it, it will leave preload plugin.  
+/// :-( thisLight 2017/08/11
 /// 
 /// You can get cookies from "cookies" in [Context], for example `request.context("cookies")`.
 /// 

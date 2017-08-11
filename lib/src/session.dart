@@ -1,10 +1,15 @@
 library web.support.session;
 import "package:flake_uuid/flake_uuid.dart";
-import "layer.dart" show FunctionalLayer;
+import "layer.dart" show FunctionalLayer,Go;
 import "plugin.dart" show Plugin;
 import "request.dart" show Request;
 import "dart:io" show Cookie;
 import "web.dart" show Application;
+import "logging.dart" show getLogger;
+import "package:logging/logging.dart" show Logger;
+
+
+final Logger _logger = getLogger("Session");
 
 
 const String _SESSIONID = "sessionId";
@@ -88,21 +93,30 @@ class DefaultSessionAdapter extends SessionAdapter{
 }
 
 
-final FunctionalLayer SessionLayer = new FunctionalLayer.withName("SessionLayer", (Request req){
+final FunctionalLayer SessionLayer = new FunctionalLayer.withName("SessionLayer", (Request req, Go go){
     SessionManager manager = req.state.memories["sessionManager"];
     Map<String, Cookie> cookies = req.context("cookies");
     Session sess;
     if (!cookies.containsKey(_SESSIONID)){
         sess = manager.create();
         cookies[_SESSIONID] = new Cookie(_SESSIONID, sess.id);
+        _logger.info("New Session ${sess.id}");
     } else {
         sess = manager.get(cookies[_SESSIONID].value);
+        _logger.info("Session ${sess.id}");
     }
 
-    req.context.register(_CONTEXTNAME, sess);
+    req.context.register(_CONTEXTNAME,(_) => sess);
+
+    go();
 });
 
 
+/// *DON'T USE IT NOW!*  
+/// Because this plugin required the Cookie Plugin, but that is broken.  
+/// if has any plugin can register a context "cookies" that will return a [Map<String, Cookie>], this plugin will work again.
+/// :) thisLight 2017/08/11
+/// 
 /// Apply change of session support to [Application].
 /// Must use after [CookiePlugin]([CookiePlugin] will be used when [Application] init).  
 /// It is not a preload plugin, you must use it by yourself.  
