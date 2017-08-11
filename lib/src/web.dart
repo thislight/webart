@@ -8,6 +8,7 @@ import "./request.dart" show Request;
 import "./plugin.dart" show Plugin;
 import "./route.dart" show Router,RouteSpec;
 import "cookie.dart" show CookiePlugin;
+import "session.dart" show SessionPlugin;
 import "package:shelf/shelf.dart" as shelf;
 import "package:shelf/shelf_io.dart" as io;
 import "package:logging/logging.dart" show Logger;
