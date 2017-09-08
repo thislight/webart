@@ -24,7 +24,6 @@ class RouteSpec{
     }
     
     Future<bool> accept(Request request) async{
-        _logger.info("Match: ${request.url} and ${template.template}");
         if(parser.matches(request.url)){
             request.context.register("urlparam", this.contextAdapter);
             await target(request);
@@ -67,9 +66,8 @@ class Router {
     bool accept(Request request){
         bool isAccepted = false;
         for (RouteSpec spec in rlist){
-            if(spec.accept(request)){
+            if(spec.accept(request) == true){
                 isAccepted = true;
-                _logger.info("${request.path} => $spec");
                 break;
             }
         }
