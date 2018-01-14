@@ -32,7 +32,7 @@ main(){
 }
 
 // Define handler
-void helloWorldHandler(Request request){
+Future helloWorldHandler(Request request) async{
     request.res.ok("Hello World");
 }
 ````
