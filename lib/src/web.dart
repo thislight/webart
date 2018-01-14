@@ -1,6 +1,6 @@
 library web;
 import "dart:io" show File;
-import "dart:async" show Future,Timer,Completer,scheduleMicrotask;
+import "dart:async" show Future;
 import "./layer.dart";
 import "./logging.dart" show LoggingLayer,getLogger;
 import "./config.dart" show Config;
@@ -13,22 +13,6 @@ import "package:logging/logging.dart" show Logger;
 
 
 final Logger _logger = getLogger("Application");
-
-
-Future<shelf.Response> waitForResponse(Request request){
-    Completer<shelf.Response> completer = new Completer();
-    scheduleMicrotask( () =>
-    new Timer.periodic(const Duration(milliseconds: 1), (Timer timer){
-        if(request.res.isFinish){
-            timer.cancel();
-            shelf.Response rawRes = request.response.done();
-            _logger.info("Got raw response@${rawRes.hashCode}");
-            completer.complete(rawRes);
-        }
-    })
-    );
-    return completer.future;
-}
 
 
 class Application {
@@ -49,8 +33,8 @@ class Application {
     Future<shelf.Response> handler(shelf.Request raw) async{
         LayerState currState = lman.newState;
         Request request = new Request(raw,currState,this);
-        currState.start([request]);
-        return await waitForResponse(request);
+        await currState.start([request]);
+        return await request.response.done();
     }
 
     Future<String> getErrorPage(int code) async {

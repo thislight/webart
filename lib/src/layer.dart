@@ -38,14 +38,14 @@ class FunctionalLayer implements Layer {
             args = [];
         }
         if (namedArgs != null) {
-            await Function.apply(function, args, namedArgs);
+            return Function.apply(function, args, namedArgs);
         } else {
-            await Function.apply(function, args);
+            return Function.apply(function, args);
         }
     }
 
     Future apply(List args, [Map<Symbol, dynamic> namedArgs]) async{
-        await this.run(args,namedArgs);
+        return this.run(args,namedArgs);
     }
 
     String toString() => "$name@$hashCode { function=$function }";
@@ -116,7 +116,7 @@ class LayerState {
         return () async{
             Layer l = next();
             if (l != null){
-                await l.apply(args,namedArgs);
+                return l.apply(args,namedArgs);
             }
         };
     }
@@ -124,7 +124,7 @@ class LayerState {
     Future start(List args, [Map<Symbol, dynamic> namedArgs]) async{
         Function go = buildGoFunction(args,namedArgs);
         args.add(go);
-        await go();
+        return go();
     }
 
     Layer next(){

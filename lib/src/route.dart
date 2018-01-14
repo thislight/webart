@@ -1,11 +1,15 @@
 import "./request.dart" show Request,Response;
 import "./logging.dart" show getLogger;
-import "./layer.dart" show Layer,GoFunction;
+import "./layer.dart" show FunctionalLayer,GoFunction;
 import "package:uri_template/uri_template.dart";
 import "package:logging/logging.dart" show Logger;
 import "dart:async" show Future;
 
 final Logger _logger = getLogger("Router");
+
+
+typedef Future RequestHandler(Request request);
+
 
 /// The base of RouteSpec
 abstract class BaseRouteSpec {
@@ -16,7 +20,7 @@ abstract class BaseRouteSpec {
 class RouteSpec{
     UriTemplate template;
     UriParser parser;
-    Function target;
+    RequestHandler target;
 
     RouteSpec(String reg, this.target){
         this.template = new UriTemplate(reg);
@@ -63,10 +67,10 @@ class Router {
         addSpec(new RouteSpec(reg, target));
     }
 
-    bool accept(Request request){
+    Future<bool> accept(Request request) async{
         bool isAccepted = false;
         for (RouteSpec spec in rlist){
-            if(spec.accept(request) == true){
+            if((await spec.accept(request)) == true){
                 isAccepted = true;
                 break;
             }
@@ -74,8 +78,8 @@ class Router {
         return isAccepted;
     }
 
-   Layer buildLayer(){
-        return new Layer((Request request, GoFunction go) async{
+   FunctionalLayer buildLayer(){
+        return new FunctionalLayer.withName("RoutingLayer",(Request request, GoFunction go) async{
             if(!(await accept(request))) {
                 _logger.info("Not Handled: ${request.path}");
                 Response res = request.res;
@@ -87,6 +91,6 @@ class Router {
         });
     }
 
-    Layer get layer => buildLayer();
+    FunctionalLayer get layer => buildLayer();
 
 }
