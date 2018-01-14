@@ -1,5 +1,5 @@
 import 'dart:async' show Future;
-import "package:web.dart/web.dart";
+import "package:webart/web.dart";
 
 
 main(){
