@@ -1,3 +1,4 @@
+import 'dart:async' show Future;
 import "package:web.dart/web.dart";
 
 
@@ -5,10 +6,10 @@ main(){
     var app = new Application(
         new Config(<String, dynamic>{
             "route":{
-                "": _homePage,
                 "hello/{name}": _helloPage,
                 "query{?q}": _queryPage,
                 "json{?key,lang}": _getJsonPage,
+                "": _homePage,
             }
         })
     );
@@ -17,23 +18,23 @@ main(){
     });
 }
 
-void _homePage(Request request){
+Future _homePage(Request request) async{
     request.res.ok("This is home");
 }
 
-void _helloPage(Request request){
+Future _helloPage(Request request) async{
     String name = request.context("urlparam")["name"];
     request.res.ok("Hello, $name");
 }
 
-void _queryPage(Request request){
+Future _queryPage(Request request) async{
     if (request.only(["get"])){
         String qstr = request.context("urlparam")["q"];
         request.res.ok("You are finding $qstr");
     }
 }
 
-void _getJsonPage(Request request){
+Future _getJsonPage(Request request) async{
     Map data = {
         "data1": {
             "zh": "你好",
