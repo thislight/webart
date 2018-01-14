@@ -2,7 +2,7 @@
   A lightweight web framework for Dart.
 
 ### Unstable
-  This library isn't stable now, it doesn't has any test. Any discussion welcome!
+  This library is unstable now, it doesn't has any test. Any discussion welcome!
 
 ## Features
 - Basic Web Server
@@ -13,7 +13,7 @@
 ## Usage
 This example show the basic usage of web.dart
 ````dart
-import "package:web.dart/web.dart";
+import "package:webart/web.dart";
 
 main(){
     // Create app
