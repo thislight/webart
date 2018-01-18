@@ -1,0 +1,6 @@
+image: google/dart:latest
+
+trigger_document_build:
+  stage: deploy
+  script:
+    - "curl -X POST -F token=$WTTOKEN -F ref=REF_NAME https://gitlab.com/api/v4/projects/3874160/trigger/pipeline"
