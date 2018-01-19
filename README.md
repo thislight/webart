@@ -5,7 +5,7 @@
   This library is unstable now, it doesn't has any test. Any discussion welcome!
 
 ## Features
-- Basic Web Server
+- Web server (Thanks [shelf](https://pub.dartlang.org/packages/shelf))
 - Plugin support
 - Router
 - Context support
@@ -36,7 +36,16 @@ Future helloWorldHandler(Request request) async{
     request.res.ok("Hello World");
 }
 ````
-Now api documents aren't finished. But you can get a overview of this library.
+
+## Document
+Now api documents aren't finished. But you can get a overview of this library.  
+
+Documents will be build when new changes pushing or everyday(4:00 UTC+8).
+
+[The document of branch master](https://thislight.gitlab.io/web.dart/doc/api)
+
+
+[The document of branch develop](https://thislight.gitlab.io/web.dart/develop/doc/api)
 
 ## LICENSE
 Copyright 2017 thisLight
