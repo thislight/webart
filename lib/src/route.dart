@@ -1,6 +1,6 @@
 import "./request.dart" show Request,Response;
 import "./logging.dart" show getLogger;
-import "./layer.dart" show FunctionalLayer,GoFunction;
+import "./layer.dart" show FunctionalLayer;
 import "package:uri_template/uri_template.dart";
 import "package:logging/logging.dart" show Logger;
 import "dart:async" show Future;
@@ -11,9 +11,11 @@ final Logger _logger = getLogger("Router");
 typedef Future RequestHandler(Request request);
 
 
-/// The base of RouteSpec
+
 abstract class BaseRouteSpec {
-    /// route to target handler, if accepted, return a `true`, else return `false`
+    /// The base of RouteSpec
+    
+    /// Routing to target handler. if accepted, return a `true`, else return `false`
     bool accept(Request request);
 }
 
@@ -79,7 +81,7 @@ class Router {
     }
 
    FunctionalLayer buildLayer(){
-        return new FunctionalLayer.withName("RoutingLayer",(Request request, GoFunction go) async{
+        return new FunctionalLayer.withName("RoutingLayer",(Request request) async{
             if(!(await accept(request))) {
                 _logger.info("Not Handled: ${request.path}");
                 Response res = request.res;

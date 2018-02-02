@@ -1,7 +1,7 @@
 library web.logging;
 import "package:logging/logging.dart";
 import "package:bwu_log/bwu_log.dart";
-import "./layer.dart" show FunctionalLayer,GoFunction;
+import "./layer.dart" show FunctionalLayer;
 import "./request.dart" show Request;
 
 class SimpleStringFormatter implements FormatterBase<String> {
@@ -22,8 +22,7 @@ Logger getLogger(String name){
 final HandlerLogger = getLogger("handler");
 
 
-final FunctionalLayer LoggingLayer = new FunctionalLayer((Request req, GoFunction go){
+final FunctionalLayer LoggingLayer = new FunctionalLayer((Request req) async {
     HandlerLogger.info("${req.method} ${req.path}");
-    go();
 })
     ..setName("LoggingLayer");
