@@ -8,13 +8,9 @@ final Logger _logger = getLogger("Layer");
 
 abstract class Layer {
     /// This class is base of all of Layers
-    /// [Layer.apply] must be async
-    void apply(List args, [Map<Symbol, dynamic> namedArgs]);
-
-    factory Layer(Function f){
-        /// Return a [FunctionalLayer]
-        return new FunctionalLayer(f);
-    }
+    
+    /// This method is entry of layer, must be async
+    Future apply(List args, [Map<Symbol, dynamic> namedArgs]);
 }
 
 
