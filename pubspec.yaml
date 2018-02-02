@@ -1,12 +1,10 @@
 name: webart
-version: 0.2.0-alpha.0
+version: 0.2.0-alpha.1
 description: A lightweight web framework for dart
 homepage: https://gitlab.com/thislight/web.dart
 author: thisLight <l1589002388@gmail.com>
 dependencies:
-  shelf: ">=0.6.8 <0.7.0"
-  shelf_redis_session_store: ">=0.0.2 <0.1.0"
+  shelf: ">=0.7.0 <0.8.0"
   uri_template: ">=0.6.0 <0.7.0"
   yaml: ">=2.1.12 <3.0.0"
   bwu_log: ">=0.1.2 <0.2.0"
-  flake_uuid: ">=0.1.1 <0.2.0"
