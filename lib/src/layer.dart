@@ -92,8 +92,6 @@ class LayerChain {
 
 
 typedef void LayerForEachHandler(Layer layer);
-typedef void GoFunction();
-typedef void Go();
 
 
 class LayerState {
@@ -108,19 +106,8 @@ class LayerState {
         _logger.info("New state created: LayerState@${hashCode}");
     }
 
-    Function buildGoFunction(List args, [Map<Symbol, dynamic> namedArgs]){
-        return () async{
-            Layer l = next();
-            if (l != null){
-                return l.apply(args,namedArgs);
-            }
-        };
-    }
-
     Future start(List args, [Map<Symbol, dynamic> namedArgs]) async{
-        Function go = buildGoFunction(args,namedArgs);
-        args.add(go);
-        return go();
+        _untilNull(next, (Layer l) => l.apply(args,namedArgs));
     }
 
     Layer next(){
@@ -142,4 +129,19 @@ class LayerState {
     Layer get pointer => pchain.list[rawPointer];
 
     int get rawPointer => _rawPointer;
+}
+
+
+typedef Future _DataMapper(dynamic data);
+
+
+Future _untilNull(Function f1,_DataMapper f2) async{
+    for(;;){
+        dynamic v1 = Function.apply(f1,[]);
+        if (v1 != null){
+            await f2(v1);
+        } else {
+            break;
+        }
+    }
 }
