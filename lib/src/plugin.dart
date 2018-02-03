@@ -22,7 +22,7 @@ class EventBus{
     static final Map<String,List<Function>> _map = new Map();
 
     static _FutureEvent on(String event){
-        if (!_map.containsKey(event)){
+        if (_map[event]==null){
             _map[event] = <Function>[];
         }
         return new _FutureEvent((f) async{
