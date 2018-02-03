@@ -22,7 +22,7 @@ class EventBusTestCase{
             test('newEventHandlerWillBeAdded event will happen when add new event',(){
                 var p = false;
                 EventBus.on('eventbus.newEventHandlerWillBeAdded').then(() => p = true);
-                EventBus.on('testEvent',() => p);
+                EventBus.on('testEvent').then(() => p);
                 expect(p, equals(true));
             });
         });
