@@ -46,6 +46,6 @@ Future _getJsonPage(Request request) async{
         }
     };
     Map<String, String> param = request.context("urlparam");
-    request.on("get",(_) => request.res.ok({ "result": data[param["key"]][param["lang"]]}));
+    request.on("get",(_) async => request.res.ok({ "result": data[param["key"]][param["lang"]]}));
 }
 
