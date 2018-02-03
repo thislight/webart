@@ -1,8 +1,8 @@
 image: google/dart:latest
 
 before_script:
-    - pub get
-    - pub get
+  - pub get
+  - pub get
 
 #trigger_document_build:
 #  stage: deploy
@@ -11,5 +11,5 @@ before_script:
 #    - "curl -X POST -F token=$WTTOKEN -F ref=master https://gitlab.com/api/v4/projects/5169462/trigger/pipeline"
 
 test:
-  stage: development
+  stage: test
   script: pub run test tests/
