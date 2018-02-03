@@ -1,4 +1,4 @@
-import "./request.dart" show Request,Response;
+import "./request.dart" show Request;
 import "./logging.dart" show getLogger;
 import "./layer.dart" show FunctionalLayer,Layer;
 import './handler.dart';
