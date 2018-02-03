@@ -1,6 +1,6 @@
 library web.plugin;
 import "./web.dart" show Application;
-import 'dart:async' show Future,scheduleMicrotask;
+import 'dart:async' show Future;
 
 abstract class Plugin{
     void init(Application app);
@@ -26,7 +26,7 @@ class EventBus{
             _map[event] = <Function>[];
         }
         return new _FutureEvent((f) async{
-            List p = await happen("eventbus.newEventHandlerWillBeAdded",[event],defReturn: [null,f]);
+            List p = await happen("eventbus.newEventHandlerWillBeAdded",[event,f],defReturn: [null,f]);
             _map[event].add(p[1]);
         });
     }
@@ -41,8 +41,12 @@ class EventBus{
     }
 
     static dynamic happen(String event,List args,{dynamic defReturn: null}) async{
-        var v = _happen(event, args,defReturn: defReturn);
-        _happen("eventbus.newEventHappened", [event]);
+        var v = await _happen(event, args,defReturn: defReturn);
+        await _happen("eventbus.newEventHappened", [event]);
         return v;
+    }
+
+    static renew(){
+        _map.clear();
     }
 }

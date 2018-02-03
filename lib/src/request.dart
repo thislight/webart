@@ -8,10 +8,10 @@ import "./config.dart" show Config;
 import "dart:async" show Future,Completer;
 import "./logging.dart" show getLogger;
 import 'package:logging/logging.dart' show Logger;
+import './handler.dart';
 
 final Logger _logger = getLogger("Request");
 
-typedef void RequestHandler(Request request);
 
 class Request{
      shelf.Request _raw;
@@ -139,5 +139,9 @@ class Response{
         if (_handler != null) return;
         _logger.info("Request@${request.url} will be handled by RequestHandler@$h");
         _handler = h;
+    }
+
+    Future handle() async {
+        await _handler(request);
     }
 }
