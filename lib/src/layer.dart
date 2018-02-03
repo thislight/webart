@@ -5,11 +5,20 @@ import "./logging.dart" show getLogger;
 
 final Logger _logger = getLogger("Layer");
 
-
+/// This class is base of all of Layers  
+/// If you want to make own layer, extend this class  
+/// For example:  
+/// ````
+/// class MyLayer extend Layer {
+///     @override
+///     Future apply(List args, [Map<Symbol, dynamic> namedArgs]){
+///         // Do something here
+///     }
+/// }
+/// ````
+/// If you need a simple way to build a layer, see [FunctionalLayer]  
 abstract class Layer {
-    /// This class is base of all of Layers
-    
-    /// This method is entry of layer, must be async
+    /// The entry of layer, must be async
     Future apply(List args, [Map<Symbol, dynamic> namedArgs]);
 }
 
