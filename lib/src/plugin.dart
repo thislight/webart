@@ -50,7 +50,7 @@ class EventBus{
         _map.clear();
     }
     
-    static print(){
+    static printInfo(){
         print("--- Raw Event Bus Output ---");
         print("Current event bus has ${_map.keys.length} event.");
         _map.forEach((k,v){
