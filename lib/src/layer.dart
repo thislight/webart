@@ -107,7 +107,7 @@ class LayerState {
     }
 
     Future start(List args, [Map<Symbol, dynamic> namedArgs]) async{
-        _untilNull(next, (Layer l) => l.apply(args,namedArgs));
+        await _untilNull(next, (Layer l) async => l.apply(args,namedArgs));
     }
 
     Layer next(){
