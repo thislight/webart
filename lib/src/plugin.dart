@@ -32,7 +32,7 @@ class EventBus{
     }
 
     static dynamic _happen(String event,List args,{defReturn: null}) async{
-        if (!_map.containsKey(event)) return defReturn;
+        if (_map[event]==null) return defReturn;
         if (args == null) args = [];
         for (Function f in _map[event]){
             args = await Function.apply(f, args);
