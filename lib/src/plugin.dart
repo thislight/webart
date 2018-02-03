@@ -49,4 +49,15 @@ class EventBus{
     static renew(){
         _map.clear();
     }
+    
+    static print(){
+        print("--- Raw Event Bus Output ---");
+        print("Current event bus has ${_map.keys.length} event.");
+        _map.forEach((k,v){
+            print(k);
+            v.forEach((val) => print(v));
+        });
+        print("--- Output End ---");
+    }
+    
 }
