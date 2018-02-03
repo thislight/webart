@@ -14,7 +14,7 @@ typedef Future RequestHandler(Request request);
 /// The base of RouteSpec
 abstract class BaseRouteSpec {
     /// Routing to target handler. if accepted, return a [RequestHandler] else return `null`
-    RequestHandler accept(Request request);
+    Future<RequestHandler> accept(Request request);
 }
 
 class RouteSpec{
