@@ -10,7 +10,7 @@ import 'package:webart/src/plugin.dart' show EventBus;
 void main(){
     group('EventBus', () {
         tearDown((){
-            EventBus.print();
+            EventBus.printInfo();
             EventBus.renew();
         });
         test('can listen and happen event', () {
