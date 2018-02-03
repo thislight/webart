@@ -51,7 +51,6 @@ class Application {
     }
 
     Future start(String address, int port) async{
-        _addRouteLayer();
         return io.serve(buildHandler(),address,port);
     }
 
@@ -87,10 +86,10 @@ class Application {
     }
 
     void _initRouter(){
-        this.router = new Router(<RouteSpec>[]);
+        this.router = C['router']!=null ? C['router'] : new Router(<RouteSpec>[]);
     }
 
     void _usePreloadPlugin(){
-        // this.use(new CookiePlugin()); Cookie Plugin no work
+        _addRouteLayer();
     }
 }

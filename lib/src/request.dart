@@ -7,10 +7,11 @@ import "./web.dart" show Application;
 import "./config.dart" show Config;
 import "dart:async" show Future,Completer;
 import "./logging.dart" show getLogger;
+import 'package:logging/logging.dart' show Logger;
+import './handler.dart';
 
-final _logger = getLogger("Request");
+final Logger _logger = getLogger("Request");
 
-typedef void RequestHandler(Request request);
 
 class Request{
      shelf.Request _raw;
@@ -79,6 +80,7 @@ class Response{
     int statusCode;
     Map<String, String> headers;
     Completer _clt;
+    RequestHandler _handler;
 
     Response(this.request){
         _clt = new Completer();
@@ -127,8 +129,19 @@ class Response{
     bool get isEmpty => (statusCode == null) && (body == null);
 
     void finish(){
-        _logger.info("Request@${request.hashCode} finished");
+        _logger.info("Request#${request.hashCode} finished");
         _clt.complete();
     }
+
     bool get isFinish => _clt.isCompleted;
+
+    void handleWith(RequestHandler h){
+        if (_handler != null) return;
+        _logger.info("Request@${request.url} will be handled by RequestHandler@$h");
+        _handler = h;
+    }
+
+    Future handle() async {
+        await _handler(request);
+    }
 }
