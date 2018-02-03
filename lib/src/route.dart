@@ -11,12 +11,10 @@ final Logger _logger = getLogger("Router");
 typedef Future RequestHandler(Request request);
 
 
-
+/// The base of RouteSpec
 abstract class BaseRouteSpec {
-    /// The base of RouteSpec
-    
-    /// Routing to target handler. if accepted, return a `true`, else return `false`
-    bool accept(Request request);
+    /// Routing to target handler. if accepted, return a [RequestHandler] else return `null`
+    RequestHandler accept(Request request);
 }
 
 class RouteSpec{
