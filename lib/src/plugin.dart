@@ -35,7 +35,7 @@ class EventBus{
         if (_map[event]==null) return defReturn;
         if (args == null) args = [];
         for (Function f in _map[event]){
-            args = await Function.apply(f, args);
+            args = await f(args);
         }
         return args;
     }
