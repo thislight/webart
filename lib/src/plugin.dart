@@ -23,7 +23,7 @@ class EventBus{
 
     static _FutureEvent on(String event){
         if (_map[event]==null){
-            _map[event] = <Function>[];
+            _map[event] = new List();
         }
         return new _FutureEvent((f) async{
             List p = await happen("eventbus.newEventHandlerWillBeAdded",[event,f],defReturn: [null,f]);
