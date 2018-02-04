@@ -25,5 +25,9 @@ void main(){
              await (EventBus.on('testEvent').then(originBack((_) => null)));
              expect(p, equals(true));
           });
+          test('if no matched event will return defReturn valse',() async{
+              var val = await EventBus.happen("test",[],defReturn:[true]);
+              expect(val, equals([true]));
+          });
       });
 }
