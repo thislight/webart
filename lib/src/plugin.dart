@@ -36,7 +36,6 @@ class _EventBus{
             }
             happen("eventbus.newEventHandlerWillBeAdded",[event,f]);
             _map[e].add(f);
-            print(_map);
         });
     }
 

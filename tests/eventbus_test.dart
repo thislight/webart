@@ -13,16 +13,16 @@ void main(){
             EventBus.printInfo();
             EventBus.renew();
         });
-        test('can listen and happen event', () {
+        test('can listen and happen event', () async {
             var p = false;
-            EventBus.on("testEvent").then(originBack((_) async => p = true));
-            EventBus.happen("testEvent", []);
+            await EventBus.on("testEvent").then(originBack((_) => p = true));
+            await EventBus.happen("testEvent", []);
               expect(p, equals(true));
           });
-          test('newEventHandlerWillBeAdded event will happen when add new event',(){
+          test('newEventHandlerWillBeAdded event will happen when add new event',() async{
               var p = false;
-              EventBus.on('eventbus.newEventHandlerWillBeAdded').then(originBack((_) => p = true));
-             EventBus.on('testEvent').then(originBack((_) => p));
+              await (EventBus.on('eventbus.newEventHandlerWillBeAdded').then(originBack((_) => p = true)));
+             await (EventBus.on('testEvent').then(originBack((_) => null)));
              expect(p, equals(true));
           });
       });
