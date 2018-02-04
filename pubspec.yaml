@@ -3,6 +3,8 @@ version: 0.2.0-alpha.2
 description: A lightweight web framework for dart
 homepage: https://gitlab.com/thislight/web.dart
 author: thisLight <l1589002388@gmail.com>
+environment:
+  sdk: ">=1.8.0 <2.0.0"
 dependencies:
   shelf: "^0.7.1"
   uri_template: "^0.6.0"
