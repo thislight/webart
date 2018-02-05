@@ -1,5 +1,5 @@
 name: webart
-version: 0.2.0-alpha.4
+version: 0.2.0-alpha.5
 description: A lightweight web framework for dart
 homepage: https://gitlab.com/thislight/web.dart
 author: thisLight <l1589002388@gmail.com>
