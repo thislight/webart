@@ -30,7 +30,6 @@ class RouteSpec implements BaseRouteSpec{
     Future<RequestHandler> accept(Request request) async{
         if(parser.matches(request.url)){
             request.context.register("urlparam", this.contextAdapter);
-            await target(request);
             return target;
         }
         return null;

@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.0-alpha.4
+- Fix error that handler will be called twice
+
 ## 0.2.0-alpha.3
 - Fix error that handler not handled
 
