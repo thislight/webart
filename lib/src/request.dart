@@ -5,7 +5,7 @@ import "./layer.dart" show LayerState;
 import "./context.dart" show Context;
 import "./web.dart" show Application;
 import "./config.dart" show Config;
-import "dart:async" show Future,Completer;
+import "dart:async" show Future;
 import "./logging.dart" show getLogger;
 import 'package:logging/logging.dart' show Logger;
 import './handler.dart';
@@ -79,15 +79,12 @@ class Response{
     Request request;
     int statusCode;
     Map<String, String> headers;
-    Completer _clt;
     RequestHandler _handler;
 
-    Response(this.request){
-        _clt = new Completer();
-    }
+    Response(this.request);
 
     Future<shelf.Response> done() async{
-        await _clt.future;
+        await handle();
         if (isEmpty){
             notFound();
         }
@@ -97,7 +94,6 @@ class Response{
     void ok(var body){
         statusCode = 200;
         this.body = preprocessBody(body);
-        finish();
     }
 
     void forbidden([var body]) => error(403,body);
@@ -107,7 +103,6 @@ class Response{
     void error(int code, [var body]){
         statusCode = code;
         getTargetPage(body);
-        finish();
     }
 
     Future getTargetPage([var body]) async{
@@ -127,13 +122,6 @@ class Response{
     }
 
     bool get isEmpty => (statusCode == null) && (body == null);
-
-    void finish(){
-        _logger.info("Request#${request.hashCode} finished");
-        _clt.complete();
-    }
-
-    bool get isFinish => _clt.isCompleted;
 
     void handleWith(RequestHandler h){
         if (_handler != null) return;

@@ -93,7 +93,6 @@ class Router implements BaseRouter{
             if(!(await accept(request))) {
                 _logger.info("Not Handled: ${request.path}");
                 await EventBus.happen("router.handlerNotHandled", [request]);
-                request.res.finish();
             }
         });
     }

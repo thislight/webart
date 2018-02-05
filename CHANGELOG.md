@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.0-alpha.3
+- Fix error that handler not handled
+
 ## 0.2.0-alpha.2
 - Add EventBus for plugin
 - Redesign route system, allow using third party router
