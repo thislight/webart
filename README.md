@@ -1,7 +1,7 @@
 # web.dart
   A lightweight web framework for Dart.
 
-### Unstable
+## Unstable
   This library is unstable now, it doesn't has any test. Any discussion welcome!
 
 ## Features
@@ -12,6 +12,20 @@
 
 ## Usage
 This example show the basic usage of web.dart
+
+````yaml
+  webart:
+    git: https://gitlab.com/thislight/web.dart.git
+````
+
+Or
+
+````yaml
+  webart: any
+````
+
+Code:
+
 ````dart
 import "package:webart/web.dart";
 
