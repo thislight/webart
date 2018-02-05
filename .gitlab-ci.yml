@@ -12,4 +12,4 @@ before_script:
 
 test:
   stage: test
-  script: pub run test tests/
+  script: pub run test test/
