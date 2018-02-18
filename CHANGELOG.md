@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.0-alpha.6
+- Remove `LoggingLayer`
+- `Request.on` changes to async
+
 ## 0.2.0-alpha.5
 - return not found when not handler found
 

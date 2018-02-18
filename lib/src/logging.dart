@@ -22,7 +22,3 @@ Logger getLogger(String name){
 final HandlerLogger = getLogger("handler");
 
 
-final FunctionalLayer LoggingLayer = new FunctionalLayer((Request req) async {
-    HandlerLogger.info("${req.method} ${req.path}");
-})
-    ..setName("LoggingLayer");

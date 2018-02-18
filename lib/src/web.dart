@@ -47,7 +47,6 @@ class Application {
     }
 
     void _initLayer(){
-        lman.chain.add(LoggingLayer);
     }
 
     Future start(String address, int port) async{
