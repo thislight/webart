@@ -56,7 +56,7 @@ class Request{
 
      String get handlerPath => raw.handlerPath;
 
-     void on(String method, RequestHandler handler) async{
+     Future on(String method, RequestHandler handler) async{
          if (method.toLowerCase() == this.method.toLowerCase()){
             await handler(this);
          }

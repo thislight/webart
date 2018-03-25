@@ -66,7 +66,7 @@ class Router implements BaseRouter{
         return r;
     }
 
-    void addSpec(RouteSpec spec){
+    void addSpec(BaseRouteSpec spec){
         rlist.add(spec);
     }
 
