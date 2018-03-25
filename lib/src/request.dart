@@ -113,10 +113,11 @@ class Response{
         }
     }
 
-    static dynamic preprocessBody(var body){
+    dynamic preprocessBody(var body){
         if (body is String){
             return body;
         } else {
+            headers['Content-Type'] = "application/json";
             return JSON.encode(body);
         }
     }
