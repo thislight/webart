@@ -2,7 +2,7 @@ library web;
 import "dart:io" show File;
 import "dart:async" show Future;
 import "./layer.dart";
-import "./logging.dart" show LoggingLayer,getLogger;
+import "./logging.dart" show getLogger;
 import "./config.dart" show Config;
 import "./request.dart" show Request;
 import "./plugin.dart" show Plugin;

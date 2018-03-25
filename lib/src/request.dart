@@ -78,12 +78,13 @@ class Response{
     String body;
     Request request;
     int statusCode;
-    Map<String, String> headers;
+    Map<String, String> headers = {};
     List<String> acceptedMethods = ['Get','Post','Options','Head'];
     RequestHandler _handler;
 
     Response(this.request){
         headers['Content-Type'] = 'plain/html';
+        headers['Server'] = 'Dart, web.dart, shelf';
     }
 
     Future<shelf.Response> done() async{
@@ -93,6 +94,8 @@ class Response{
         }
         if (request.only(["options"]) && isEmpty){
            headers['Allow'] = acceptedMethods.join(', '); 
+           headers['Content-Length'] = "0";
+           ok('');
         }
         return new shelf.Response(statusCode, body: body, headers: headers);
     }
