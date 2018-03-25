@@ -81,7 +81,9 @@ class Response{
     Map<String, String> headers;
     RequestHandler _handler;
 
-    Response(this.request);
+    Response(this.request){
+        headers['Content-Type'] = 'plain/html';
+    }
 
     Future<shelf.Response> done() async{
         await handle();
