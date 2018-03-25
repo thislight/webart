@@ -79,6 +79,7 @@ class Response{
     Request request;
     int statusCode;
     Map<String, String> headers;
+    List<String> acceptedMethods = ['Get','Post','Options','Head'];
     RequestHandler _handler;
 
     Response(this.request){
@@ -89,6 +90,9 @@ class Response{
         await handle();
         if (isEmpty){
             notFound();
+        }
+        if (request.only(["options"]) && isEmpty){
+           headers['Allow'] = acceptedMethods.join(', '); 
         }
         return new shelf.Response(statusCode, body: body, headers: headers);
     }
