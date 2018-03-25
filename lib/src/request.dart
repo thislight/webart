@@ -83,7 +83,7 @@ class Response{
     RequestHandler _handler;
 
     Response(this.request){
-        headers['Content-Type'] = 'plain/html';
+        headers['Content-Type'] = 'text/html';
         headers['Server'] = 'Dart, web.dart, shelf';
     }
 
