@@ -83,8 +83,9 @@ class Response{
     RequestHandler _handler;
 
     Response(this.request){
-        headers['Content-Type'] = 'plain/html';
+        headers['Content-Type'] = 'text/html';
         headers['Server'] = 'Dart, web.dart, shelf';
+        headers['Encoding'] = "UTF-8";
     }
 
     Future<shelf.Response> done() async{
@@ -92,7 +93,7 @@ class Response{
         if (isEmpty){
             notFound();
         }
-        if (request.only(["options"]) && isEmpty){
+        if ((request.method.toLowerCase() == "options") && isEmpty){
            headers['Allow'] = acceptedMethods.join(', '); 
            headers['Content-Length'] = "0";
            ok('');

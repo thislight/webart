@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.0-alpha.7
+- Will be done later
+
 ## 0.2.0-alpha.6
 - Remove `LoggingLayer`
 - `Request.on` changes to async
