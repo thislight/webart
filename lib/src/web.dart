@@ -2,7 +2,7 @@ library web;
 import "dart:io" show File;
 import "dart:async" show Future;
 import "./layer.dart";
-import "./logging.dart" show LoggingLayer,getLogger;
+import "./logging.dart" show getLogger;
 import "./config.dart" show Config;
 import "./request.dart" show Request;
 import "./plugin.dart" show Plugin;
@@ -47,11 +47,9 @@ class Application {
     }
 
     void _initLayer(){
-        lman.chain.add(LoggingLayer);
     }
 
     Future start(String address, int port) async{
-        _addRouteLayer();
         return io.serve(buildHandler(),address,port);
     }
 
@@ -87,10 +85,10 @@ class Application {
     }
 
     void _initRouter(){
-        this.router = new Router(<RouteSpec>[]);
+        this.router = C['router']!=null ? C['router'] : new Router(<RouteSpec>[]);
     }
 
     void _usePreloadPlugin(){
-        // this.use(new CookiePlugin()); Cookie Plugin no work
+        _addRouteLayer();
     }
 }

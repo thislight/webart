@@ -5,16 +5,21 @@ import "./logging.dart" show getLogger;
 
 final Logger _logger = getLogger("Layer");
 
-
+/// This class is base of all of Layers  
+/// If you want to make own layer, extend this class  
+/// For example:  
+/// ````
+/// class MyLayer extend Layer {
+///     @override
+///     Future apply(List args, [Map<Symbol, dynamic> namedArgs]){
+///         // Do something here
+///     }
+/// }
+/// ````
+/// If you need a simple way to build a layer, see [FunctionalLayer]  
 abstract class Layer {
-    /// This class is base of all of Layers
-    /// [Layer.apply] must be async
-    void apply(List args, [Map<Symbol, dynamic> namedArgs]);
-
-    factory Layer(Function f){
-        /// Return a [FunctionalLayer]
-        return new FunctionalLayer(f);
-    }
+    /// The entry of layer, must be async
+    Future apply(List args, [Map<Symbol, dynamic> namedArgs]);
 }
 
 
@@ -96,8 +101,6 @@ class LayerChain {
 
 
 typedef void LayerForEachHandler(Layer layer);
-typedef void GoFunction();
-typedef void Go();
 
 
 class LayerState {
@@ -112,19 +115,8 @@ class LayerState {
         _logger.info("New state created: LayerState@${hashCode}");
     }
 
-    Function buildGoFunction(List args, [Map<Symbol, dynamic> namedArgs]){
-        return () async{
-            Layer l = next();
-            if (l != null){
-                return l.apply(args,namedArgs);
-            }
-        };
-    }
-
     Future start(List args, [Map<Symbol, dynamic> namedArgs]) async{
-        Function go = buildGoFunction(args,namedArgs);
-        args.add(go);
-        return go();
+        await _untilNull(next, (Layer l) async => l.apply(args,namedArgs));
     }
 
     Layer next(){
@@ -146,4 +138,19 @@ class LayerState {
     Layer get pointer => pchain.list[rawPointer];
 
     int get rawPointer => _rawPointer;
+}
+
+
+typedef Future _DataMapper(dynamic data);
+
+
+Future _untilNull(Function f1,_DataMapper f2) async{
+    for(;;){
+        dynamic v1 = Function.apply(f1,[]);
+        if (v1 != null){
+            await f2(v1);
+        } else {
+            break;
+        }
+    }
 }

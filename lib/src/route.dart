@@ -1,23 +1,23 @@
-import "./request.dart" show Request,Response;
+import "./request.dart" show Request;
 import "./logging.dart" show getLogger;
-import "./layer.dart" show FunctionalLayer,GoFunction;
+import "./layer.dart" show FunctionalLayer,Layer;
+import './handler.dart';
 import "package:uri_template/uri_template.dart";
 import "package:logging/logging.dart" show Logger;
 import "dart:async" show Future;
+import "./plugin.dart" show EventBus;
 
 final Logger _logger = getLogger("Router");
 
 
-typedef Future RequestHandler(Request request);
-
-
 /// The base of RouteSpec
 abstract class BaseRouteSpec {
-    /// route to target handler, if accepted, return a `true`, else return `false`
-    bool accept(Request request);
+    /// Routing to target handler. if accepted, return a [RequestHandler] else return `null`
+    Future<RequestHandler> accept(Request request);
 }
 
-class RouteSpec{
+
+class RouteSpec implements BaseRouteSpec{
     UriTemplate template;
     UriParser parser;
     RequestHandler target;
@@ -27,13 +27,12 @@ class RouteSpec{
         this.parser = new UriParser(template);
     }
     
-    Future<bool> accept(Request request) async{
+    Future<RequestHandler> accept(Request request) async{
         if(parser.matches(request.url)){
             request.context.register("urlparam", this.contextAdapter);
-            await target(request);
-            return true;
+            return target;
         }
-        return false;
+        return null;
     }
 
     Map<String,String> contextAdapter(Request request){
@@ -43,7 +42,15 @@ class RouteSpec{
     String toString() => "RouterSpec@${this.hashCode}{ template=$template, target=$target }";
 }
 
-class Router {
+
+abstract class BaseRouter{
+    void addSpec(BaseRouteSpec spec);
+    Future<bool> accept(Request request);
+    Layer get layer;
+}
+
+
+class Router implements BaseRouter{
     List<RouteSpec> rlist;
 
     Router(this.rlist);
@@ -59,7 +66,7 @@ class Router {
         return r;
     }
 
-    void addSpec(RouteSpec spec){
+    void addSpec(BaseRouteSpec spec){
         rlist.add(spec);
     }
 
@@ -70,7 +77,9 @@ class Router {
     Future<bool> accept(Request request) async{
         bool isAccepted = false;
         for (RouteSpec spec in rlist){
-            if((await spec.accept(request)) == true){
+            var handler = await spec.accept(request);
+            if(handler != null){
+                request.res.handleWith(handler);
                 isAccepted = true;
                 break;
             }
@@ -79,14 +88,10 @@ class Router {
     }
 
    FunctionalLayer buildLayer(){
-        return new FunctionalLayer.withName("RoutingLayer",(Request request, GoFunction go) async{
+        return new FunctionalLayer.withName("RoutingLayer",(Request request) async{
             if(!(await accept(request))) {
                 _logger.info("Not Handled: ${request.path}");
-                Response res = request.res;
-                if((res.body == null) && (res.statusCode == null)){
-                    res.error(500,"No body and status code");
-                }
-                res.finish();
+                await EventBus.happen("router.handlerNotHandled", [request]);
             }
         });
     }

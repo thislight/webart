@@ -5,12 +5,13 @@ import "./layer.dart" show LayerState;
 import "./context.dart" show Context;
 import "./web.dart" show Application;
 import "./config.dart" show Config;
-import "dart:async" show Future,Completer;
+import "dart:async" show Future;
 import "./logging.dart" show getLogger;
+import 'package:logging/logging.dart' show Logger;
+import './handler.dart';
 
-final _logger = getLogger("Request");
+final Logger _logger = getLogger("Request");
 
-typedef void RequestHandler(Request request);
 
 class Request{
      shelf.Request _raw;
@@ -55,9 +56,9 @@ class Request{
 
      String get handlerPath => raw.handlerPath;
 
-     void on(String method, RequestHandler handler){
+     Future on(String method, RequestHandler handler) async{
          if (method.toLowerCase() == this.method.toLowerCase()){
-             handler(this);
+            await handler(this);
          }
      }
 
@@ -77,17 +78,24 @@ class Response{
     String body;
     Request request;
     int statusCode;
-    Map<String, String> headers;
-    Completer _clt;
+    Map<String, String> headers = {};
+    List<String> acceptedMethods = ['Get','Post','Options','Head'];
+    RequestHandler _handler;
 
     Response(this.request){
-        _clt = new Completer();
+        headers['Content-Type'] = 'plain/html';
+        headers['Server'] = 'Dart, web.dart, shelf';
     }
 
     Future<shelf.Response> done() async{
-        await _clt.future;
+        await handle();
         if (isEmpty){
             notFound();
+        }
+        if (request.only(["options"]) && isEmpty){
+           headers['Allow'] = acceptedMethods.join(', '); 
+           headers['Content-Length'] = "0";
+           ok('');
         }
         return new shelf.Response(statusCode, body: body, headers: headers);
     }
@@ -95,7 +103,6 @@ class Response{
     void ok(var body){
         statusCode = 200;
         this.body = preprocessBody(body);
-        finish();
     }
 
     void forbidden([var body]) => error(403,body);
@@ -105,7 +112,6 @@ class Response{
     void error(int code, [var body]){
         statusCode = code;
         getTargetPage(body);
-        finish();
     }
 
     Future getTargetPage([var body]) async{
@@ -116,19 +122,25 @@ class Response{
         }
     }
 
-    static dynamic preprocessBody(var body){
+    dynamic preprocessBody(var body){
         if (body is String){
             return body;
         } else {
+            headers['Content-Type'] = "application/json";
             return JSON.encode(body);
         }
     }
 
     bool get isEmpty => (statusCode == null) && (body == null);
 
-    void finish(){
-        _logger.info("Request@${request.hashCode} finished");
-        _clt.complete();
+    void handleWith(RequestHandler h){
+        if (_handler != null) return;
+        if (h == null) h = (Request req) async => req.res.notFound();
+        _logger.info("Request@${request.url} will be handled by RequestHandler@$h");
+        _handler = h;
     }
-    bool get isFinish => _clt.isCompleted;
+
+    Future handle() async {
+        await _handler(request);
+    }
 }
