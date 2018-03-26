@@ -135,8 +135,6 @@ class Response{
     bool get isEmpty => (statusCode == null) && (body == null);
 
     void handleWith(RequestHandler h){
-        if (_handler != null) return;
-        if (h == null) h = (Request req) async => req.res.notFound();
         _logger.info("Request@${request.url} will be handled by RequestHandler@$h");
         _handler = h;
     }
