@@ -1,4 +1,3 @@
-library web.plugin;
 import "./web.dart" show Application;
 import 'dart:async' show Future;
 

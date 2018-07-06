@@ -1,5 +1,3 @@
-library web;
-import "dart:io" show File;
 import "dart:async" show Future;
 import "./layer.dart";
 import "./logging.dart" show getLogger;
@@ -38,7 +36,7 @@ class Application {
         await currState.start([request]);
         return await request.response.done();
     }
-    
+
     void _initLayer(){
     }
 

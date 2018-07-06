@@ -1,4 +1,3 @@
-library web.context;
 import "./request.dart" show Request;
 
 

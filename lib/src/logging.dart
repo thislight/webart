@@ -1,4 +1,3 @@
-library web.logging;
 import "package:logging/logging.dart";
 import "package:bwu_log/bwu_log.dart";
 
