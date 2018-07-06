@@ -87,19 +87,6 @@ class Response{
         headers['Encoding'] = "UTF-8";
     }
 
-    Future<shelf.Response> done() async{
-        await handle();
-        if (isEmpty){
-            notFound();
-        }
-        if ((request.method.toLowerCase() == "options") && isEmpty){
-           headers['Allow'] = acceptedMethods.join(', '); 
-           headers['Content-Length'] = "0";
-           ok('');
-        }
-        return new shelf.Response(statusCode, body: body, headers: headers);
-    }
-
     void ok(var body){
         statusCode = 200;
         this.body = preprocessBody(body);
@@ -146,4 +133,18 @@ class Response{
     Future handle() async {
         await _handler(request);
     }
+}
+
+
+Future<shelf.Response> buildRawResponse(Response response) async{
+  await response.handle();
+  if (response.isEmpty){
+    response.notFound();
+   }
+  if ((response.request.method.toLowerCase() == "options") && response.isEmpty){
+    response.headers['Allow'] = response.acceptedMethods.join(', '); 
+    response.headers['Content-Length'] = "0";
+    response.ok('');
+  }
+  return new shelf.Response(response.statusCode, body: response.body, headers: response.headers);
 }

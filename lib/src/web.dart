@@ -2,7 +2,7 @@ import "dart:async" show Future;
 import "./layer.dart";
 import "./logging.dart" show getLogger;
 import "./config.dart" show Config;
-import "./request.dart" show Request;
+import "./request.dart" show Request, buildRawResponse;
 import "./plugin.dart" show Plugin;
 import "./route.dart" show Router,RouteSpec;
 import "package:shelf/shelf.dart" as shelf;
@@ -34,7 +34,7 @@ class Application {
         LayerState currState = lman.newState;
         Request request = new Request(raw,currState,this);
         await currState.start([request]);
-        return await request.response.done();
+        return await buildRawResponse(request.response);
     }
 
     void _initLayer(){
