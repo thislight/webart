@@ -1,5 +1,5 @@
 import "./web.dart" show Application;
-import 'dart:async' show Future;
+import 'dart:async';
 
 abstract class Plugin{
     void init(Application app);
@@ -21,6 +21,7 @@ class _FutureEvent{
 }
 
 
+@deprecated
 class _EventBus{
     Map<String,List<EventHandler>> _map;
 
@@ -71,6 +72,30 @@ class _EventBus{
 
 
 final _EventBus EventBus = new _EventBus();
+
+
+class MessageChannel<T>{
+  static Map<String,MessageChannel> _channels;
+
+  String name;
+  Stream<T> stream;
+  StreamController<T> controller;
+  
+  MessageChannel._init(this.name){
+    controller = new StreamController<T>.broadcast();
+    stream = controller.stream;
+    _channels[name] = this;
+  }
+
+  factory MessageChannel(String name){
+    if(!_channels.containsKey(name)) MessageChannel._init();
+    return _channels[name];
+  }
+
+  void send(T v){
+    controller.add(v);
+  }
+}
 
 
 dynamic originBack(Function h) => (List args) async{
