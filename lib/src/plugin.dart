@@ -75,7 +75,7 @@ final _EventBus EventBus = new _EventBus();
 
 
 class MessageChannel<T>{
-  static Map<String,MessageChannel> _channels;
+  static final Map<String,MessageChannel> _channels = {};
 
   String name;
   Stream<T> stream;
@@ -88,7 +88,7 @@ class MessageChannel<T>{
   }
 
   factory MessageChannel(String name){
-    if(!_channels.containsKey(name)) MessageChannel._init();
+    if(!_channels.containsKey(name)) return new MessageChannel._init(name);
     return _channels[name];
   }
 

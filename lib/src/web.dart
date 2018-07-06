@@ -39,7 +39,10 @@ class Application {
     }
 
     Future start(String address, int port) async{
-        return io.serve(buildHandler(),address,port);
+        return io.serve(buildHandler(),address,port).then((s){
+          _logger.info("Service Started. $address:$port");
+          return s;
+        });
     }
 
     buildHandler(){
@@ -53,7 +56,7 @@ class Application {
     }
 
     void use(Plugin p){
-        _logger.info("Using Plugin@${p.hashCode}");
+        _logger.info("Using ${p.toString()}");
         p.init(this);
     }
 

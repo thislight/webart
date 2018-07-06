@@ -13,9 +13,7 @@ main(){
             }
         })
     );
-    app.start("127.0.0.1", 8088).then((_){
-        print("Server started");
-    });
+    app.start("127.0.0.1", 8088);
 }
 
 Future _homePage(Request request) async{
