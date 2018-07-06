@@ -20,6 +20,7 @@ class Application {
     List<shelf.Middleware> middlewares;
     Router router;
     Config C;
+    bool isDebug = false;
 
     Application(this.C){
         lman = new LayerManager();
@@ -28,6 +29,7 @@ class Application {
         this._initLayer();
         this._loadConfigsRoute();
         this._usePreloadPlugin();
+        this._checkIfDebug();
     }
 
     Future<shelf.Response> handler(shelf.Request raw) async{
@@ -36,16 +38,7 @@ class Application {
         await currState.start([request]);
         return await request.response.done();
     }
-
-    Future<String> getErrorPage(int code) async {
-        var key = code.toString();
-        if (!C.rawMap.containsKey("errorPages")) {
-            return new Future.value(null);
-        }
-        String filePath = C["errorPages"][key];
-        return await (new File(filePath)).readAsString();
-    }
-
+    
     void _initLayer(){
     }
 
@@ -73,13 +66,13 @@ class Application {
     }
 
     void _loadRouteSpecFromConfig(){
-        C["route"].forEach((String key,Function target){
+        C["routes"].forEach((String key,Function target){
             router.add(key, target);
         });
     }
 
     void _loadConfigsRoute(){
-        if (C.rawMap.containsKey("route")){
+        if (C.rawMap.containsKey("routes")){
             _loadRouteSpecFromConfig();
         }
     }
@@ -90,5 +83,9 @@ class Application {
 
     void _usePreloadPlugin(){
         _addRouteLayer();
+    }
+
+    void _checkIfDebug(){
+      if (C['debug'] == true) isDebug = true;
     }
 }

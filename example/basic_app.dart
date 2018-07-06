@@ -5,7 +5,7 @@ import "package:webart/web.dart";
 main(){
     var app = new Application(
         new Config(<String, dynamic>{
-            "route":{
+            "routes":{
                 "hello/{name}": _helloPage,
                 "query{?q}": _queryPage,
                 "json{?key,lang}": _getJsonPage,

@@ -116,14 +116,19 @@ class Response{
     }
 
     Future getTargetPage([var body]) async{
-        if (body == null){
-            this.body = await request.app.getErrorPage(statusCode);
+        if (body != null){
+          body = preprocessBody(body);
         } else {
-            this.body = preprocessBody(body);
+          if (request.app.isDebug){
+            // TODO: Return something useful when in debug mode
+            body = '';
+          } else {
+            body = '';
+          }
         }
     }
 
-    dynamic preprocessBody(var body){
+    String preprocessBody(var body){
         if (body is String){
             return body;
         } else {
