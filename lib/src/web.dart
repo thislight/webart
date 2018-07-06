@@ -3,7 +3,7 @@ import "./layer.dart";
 import "./logging.dart" show getLogger;
 import "./config.dart" show Config;
 import "./request.dart" show Request, buildRawResponse;
-import "./plugin.dart" show Plugin;
+import "./plugin.dart" show Plugin, MessageChannel;
 import "./route.dart" show Router,RouteSpec;
 import "package:shelf/shelf.dart" as shelf;
 import "package:shelf/shelf_io.dart" as io;
@@ -16,6 +16,7 @@ final Logger _logger = getLogger("Application");
 class Application {
     LayerManager lman;
     List<shelf.Middleware> middlewares;
+    MessageChannel channel;
     Router router;
     Config C;
     bool isDebug = false;
@@ -23,8 +24,8 @@ class Application {
     Application(this.C){
         lman = new LayerManager();
         middlewares = <shelf.Middleware>[];
+        channel = new MessageChannel("ApplicationMain");
         this._initRouter();
-        this._initLayer();
         this._loadConfigsRoute();
         this._usePreloadPlugin();
         this._checkIfDebug();
@@ -35,9 +36,6 @@ class Application {
         Request request = new Request(raw,currState,this);
         await currState.start([request]);
         return await buildRawResponse(request.response);
-    }
-
-    void _initLayer(){
     }
 
     Future start(String address, int port) async{
