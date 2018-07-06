@@ -1,4 +1,3 @@
-library web.request;
 import "dart:convert" show JSON;
 import "package:shelf/shelf.dart" as shelf;
 import "./layer.dart" show LayerState;

@@ -1,4 +1,3 @@
-library web.layer;
 import "dart:async" show Future;
 import "package:logging/logging.dart" show Logger;
 import "./logging.dart" show getLogger;
