@@ -16,6 +16,10 @@ Logger getLogger(String name){
     return logger;
 }
 
+void stopLogging(){
+  appender.stop();
+}
+
 
 final HandlerLogger = getLogger("handler");
 
