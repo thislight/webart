@@ -43,14 +43,14 @@ class RouteSpec implements BaseRouteSpec{
 }
 
 
-abstract class BaseRouter{
-    void addSpec(BaseRouteSpec spec);
+abstract class BaseRouter<T extends BaseRouteSpec>{
+    void addSpec(T spec);
     Future<bool> accept(Request request);
     Layer get layer;
 }
 
 
-class Router implements BaseRouter{
+class Router implements BaseRouter<RouteSpec>{
     List<RouteSpec> rlist;
 
     Router(this.rlist);
@@ -66,7 +66,7 @@ class Router implements BaseRouter{
         return r;
     }
 
-    void addSpec(BaseRouteSpec spec){
+    void addSpec(RouteSpec spec){
         rlist.add(spec);
     }
 
