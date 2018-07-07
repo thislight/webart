@@ -115,7 +115,7 @@ class LayerState {
     }
 
     Future start(List args, [Map<Symbol, dynamic> namedArgs]) async{
-        await _untilNull(next, (Layer l) async => l.apply(args,namedArgs));
+        await _untilNull<Layer>(next, (Layer l) async => l.apply(args,namedArgs));
     }
 
     Layer next(){
@@ -140,10 +140,10 @@ class LayerState {
 }
 
 
-typedef Future _DataMapper(dynamic data);
+typedef Future _DataMapper<T>(T data);
 
 
-Future _untilNull(Function f1,_DataMapper f2) async{
+Future _untilNull<T>(Function f1,_DataMapper<T> f2) async{
     for(;;){
         dynamic v1 = Function.apply(f1,[]);
         if (v1 != null){

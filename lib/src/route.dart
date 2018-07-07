@@ -61,7 +61,7 @@ class Router implements BaseRouter<RouteSpec>{
 
     Router(this.rlist);
 
-    factory Router.fromList(List list){
+    factory Router.fromList(List<List> list){
         var r = new Router([]);
         list.forEach((List l){
             var reg,target;

@@ -123,6 +123,8 @@ class MessageChannel<T>{
   }
 
   ChannelSession getSession(String key) => _sessions[key];
+
+  String toString() => "$name";
 }
 
 
@@ -151,7 +153,7 @@ class ChannelSession<T>{
     messageChannel.send(new ChannelSessionMessage<T>(this.key,v));
   }
 
-  String toString() => "$key";
+  String toString() => "${messageChannel}:$key";
 }
 
 
