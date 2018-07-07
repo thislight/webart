@@ -1,0 +1,10 @@
+
+
+class Command{
+  String command;
+  Map<String,dynamic> args;
+
+  Command(this.command,{this.args}){
+    if (args == null) args = const {};
+  }
+}

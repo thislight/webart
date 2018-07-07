@@ -80,11 +80,24 @@ class MessageChannel<T>{
   String name;
   Stream<T> stream;
   StreamController<T> controller;
+  Map<String,ChannelSession> _sessions;
   
   MessageChannel._init(this.name){
     controller = new StreamController<T>.broadcast();
     stream = controller.stream;
     _channels[name] = this;
+    stream.listen((data){
+      if (data is ChannelSessionMessage){
+        _handleSessionMessage(data);
+      }
+    });
+  }
+
+  _handleSessionMessage(ChannelSessionMessage data){
+    var key = data.key;
+    if (_sessions.containsKey(key)){
+      _sessions[key].input.add(data);
+    }
   }
 
   factory MessageChannel(String name){
@@ -95,6 +108,47 @@ class MessageChannel<T>{
   void send(T v){
     controller.add(v);
   }
+
+  void registerSession(ChannelSession session){
+    _sessions[session.key] = session;
+  }
+
+  ChannelSession getSession(String key) => _sessions[key];
+}
+
+
+class ChannelSession<T>{
+  MessageChannel<ChannelSessionMessage<T>> messageChannel;
+  String key;
+  StreamController<ChannelSessionMessage<T>> input;
+  Stream<T> stream;
+
+  ChannelSession(this.messageChannel){
+    key = hashCode.toString();
+    input = new StreamController.broadcast();
+    stream = _buildInputStream();
+  }
+
+  _buildInputStream(){
+    return input.stream.transform(
+      new StreamTransformer<ChannelSessionMessage<T>,T>.fromHandlers(
+      handleData: (ChannelSessionMessage<T> message,EventSink<T> sink){
+        sink.add(message.message);
+      }
+    ));
+  }
+
+  void send(T v){
+    messageChannel.send(new ChannelSessionMessage<T>(this.key,v));
+  }
+}
+
+
+class ChannelSessionMessage<T>{
+  String key;
+  T message;
+
+  ChannelSessionMessage(this.key,this.message);
 }
 
 
