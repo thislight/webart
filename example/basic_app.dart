@@ -6,33 +6,33 @@ main(){
     var app = new Application(
         new Config(<String, dynamic>{
             "routes":{
-                "hello/{name}": _helloPage,
-                "query{?q}": _queryPage,
-                "json{?key,lang}": _getJsonPage,
-                "": _homePage,
+                "hello/{name}": helloPage,
+                "query{?q}": queryPage,
+                "json{?key,lang}": getJsonPage,
+                "": homePage,
             }
         })
     );
     app.start("127.0.0.1", 8088);
 }
 
-Future _homePage(Request request) async{
+Future homePage(Request request) async{
     request.res.ok("This is home");
 }
 
-Future _helloPage(Request request) async{
+Future helloPage(Request request) async{
     String name = request.context("urlparam")["name"];
     request.res.ok("Hello, $name");
 }
 
-Future _queryPage(Request request) async{
+Future queryPage(Request request) async{
     if (request.only(["get"])){
         String qstr = request.context("urlparam")["q"];
         request.res.ok("You are finding $qstr");
     }
 }
 
-Future _getJsonPage(Request request) async{
+Future getJsonPage(Request request) async{
     Map data = {
         "data1": {
             "zh": "你好",

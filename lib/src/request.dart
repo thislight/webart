@@ -49,9 +49,9 @@ class Request{
 
      Config get C => app.C;
 
-     String get path => raw.handlerPath;
+     String get path => url.path;
 
-     String toString() => "Request@$hashCode { method=$method, url=$url, path=$path }";
+     String toString() => "Request@$hashCode { method=$method, path=/$path }";
 
      String get handlerPath => raw.handlerPath;
 
@@ -131,6 +131,11 @@ class Response{
     }
 
     Future handle() async {
+        if (_handler == null){
+          _logger.info("Not handled: ${this.request}");
+          notFound();
+          return;
+        }
         await _handler(request);
     }
 }

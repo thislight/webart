@@ -1,4 +1,5 @@
 import "./web.dart" show Application;
+import './logging.dart';
 import 'dart:async';
 
 abstract class Plugin{
@@ -74,6 +75,9 @@ class _EventBus{
 final _EventBus EventBus = new _EventBus();
 
 
+final _mclog = getLogger("MessageChannel");
+
+
 class MessageChannel<T>{
   static final Map<String,MessageChannel> _channels = {};
 
@@ -83,7 +87,9 @@ class MessageChannel<T>{
   Map<String,ChannelSession> _sessions;
   
   MessageChannel._init(this.name){
+    _mclog.info("MessageChannel $name is created");
     controller = new StreamController<T>.broadcast();
+    _sessions = {};
     stream = controller.stream;
     _channels[name] = this;
     stream.listen((data){
@@ -94,6 +100,7 @@ class MessageChannel<T>{
   }
 
   _handleSessionMessage(ChannelSessionMessage data){
+    _mclog.info("Recvice a ChannelSessionMessage $data");
     var key = data.key;
     if (_sessions.containsKey(key)){
       _sessions[key].input.add(data);
@@ -106,10 +113,12 @@ class MessageChannel<T>{
   }
 
   void send(T v){
+    _mclog.info("Send a message $v");
     controller.add(v);
   }
 
   void registerSession(ChannelSession session){
+    _mclog.info("ChannelSession $session is registered to $name");
     _sessions[session.key] = session;
   }
 
@@ -138,9 +147,11 @@ class ChannelSession<T>{
     ));
   }
 
-  void send(T v){
+  void send(T v){   
     messageChannel.send(new ChannelSessionMessage<T>(this.key,v));
   }
+
+  String toString() => "$key";
 }
 
 
@@ -149,6 +160,8 @@ class ChannelSessionMessage<T>{
   T message;
 
   ChannelSessionMessage(this.key,this.message);
+
+  String toString() => "$key|$message";
 }
 
 

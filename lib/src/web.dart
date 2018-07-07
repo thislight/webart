@@ -1,10 +1,11 @@
-import "dart:async" show Future;
+import "dart:async";
 import "./layer.dart";
 import "./logging.dart" show getLogger;
 import "./config.dart" show Config;
 import "./request.dart" show Request, buildRawResponse;
-import "./plugin.dart" show Plugin, MessageChannel;
-import "./route.dart" show Router,RouteSpec;
+import "./plugin.dart" show ChannelSession, MessageChannel, Plugin;
+import "./route.dart" show BaseRouter, RoutingPlugin;
+import './cmd.dart';
 import "package:shelf/shelf.dart" as shelf;
 import "package:shelf/shelf_io.dart" as io;
 import "package:logging/logging.dart" show Logger;
@@ -17,7 +18,9 @@ class Application {
     LayerManager lman;
     List<shelf.Middleware> middlewares;
     MessageChannel channel;
-    Router router;
+    ChannelSession<Command> command;
+    Map<String,CommandHandler> _commandHandlers;
+    BaseRouter router;
     Config C;
     bool isDebug = false;
 
@@ -25,10 +28,17 @@ class Application {
         lman = new LayerManager();
         middlewares = <shelf.Middleware>[];
         channel = new MessageChannel("ApplicationMain");
-        this._initRouter();
-        this._loadConfigsRoute();
+        command = new ChannelSession(channel);
+        _commandHandlers = {};
+        channel.registerSession(command);
         this._usePreloadPlugin();
         this._checkIfDebug();
+        command.stream.listen((data) => scheduleMicrotask(() => _handleCommand(data)));
+    }
+
+    _handleCommand(Command command){
+      var handler = _commandHandlers[command.command];
+      if (handler != null) handler(command);
     }
 
     Future<shelf.Response> handler(shelf.Request raw) async{
@@ -39,6 +49,9 @@ class Application {
     }
 
     Future start(String address, int port) async{
+        command.send(
+          new Command("Router.ready")
+        );
         return io.serve(buildHandler(),address,port).then((s){
           _logger.info("Service Started. $address:$port");
           return s;
@@ -60,31 +73,15 @@ class Application {
         p.init(this);
     }
 
-    void _addRouteLayer(){
-        lman.chain.add(router.layer);
-    }
-
-    void _loadRouteSpecFromConfig(){
-        C["routes"].forEach((String key,Function target){
-            router.add(key, target);
-        });
-    }
-
-    void _loadConfigsRoute(){
-        if (C.rawMap.containsKey("routes")){
-            _loadRouteSpecFromConfig();
-        }
-    }
-
-    void _initRouter(){
-        this.router = C['router']!=null ? C['router'] : new Router(<RouteSpec>[]);
-    }
-
     void _usePreloadPlugin(){
-        _addRouteLayer();
+        use(new RoutingPlugin());
     }
 
     void _checkIfDebug(){
       if (C['debug'] == true) isDebug = true;
+    }
+
+    void registerCommandHandler(String c, CommandHandler handler){
+      _commandHandlers[c] = handler;
     }
 }
