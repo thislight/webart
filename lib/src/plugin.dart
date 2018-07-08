@@ -78,6 +78,8 @@ final _EventBus EventBus = new _EventBus();
 final _mclog = getLogger("MessageChannel");
 
 
+/// A Channel based on [Stream] can share message among Plugin and main program.  
+/// All of [MessageChannel] will be cached, same `name` can get the same [MessageChannel]
 class MessageChannel<T>{
   static final Map<String,MessageChannel> _channels = {};
 
@@ -99,6 +101,7 @@ class MessageChannel<T>{
     });
   }
 
+  /// Handling recviced [ChannelSessionMessage], routing to [ChannelSession]
   _handleSessionMessage(ChannelSessionMessage data){
     _mclog.info("Recvice a ChannelSessionMessage $data");
     var key = data.key;
@@ -107,16 +110,20 @@ class MessageChannel<T>{
     }
   }
 
+  /// If the channel of `name` is cached, return the cached one, if not, return a new one.
   factory MessageChannel(String name){
     if(!_channels.containsKey(name)) return new MessageChannel._init(name);
     return _channels[name];
   }
 
+  /// Add a value to stream
   void send(T v){
     _mclog.info("Send a message $v");
     controller.add(v);
   }
 
+  /// Register a [ChannelSession] to [MessageChannel]  
+  /// [MessageChannel] use `key` of [ChannelSeesion] to distinguish [ChannelSeesion]
   void registerSession(ChannelSession session){
     _mclog.info("ChannelSession $session is registered to $name");
     _sessions[session.key] = session;
