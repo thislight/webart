@@ -106,8 +106,13 @@ class Response{
           body = preprocessBody(body);
         } else {
           if (request.app.isDebug){
-            // TODO: Return something useful when in debug mode
-            body = '';
+            body = '''
+            Request: $request
+            Status code: $statusCode
+            Headlers: $headers
+            Accepted methods: $acceptedMethods
+            Handler = $_handler
+            ''';
           } else {
             body = '';
           }
