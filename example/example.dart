@@ -5,6 +5,7 @@ import "package:webart/web.dart";
 main(){
     var app = new Application(
         new Config(<String, dynamic>{
+            'debug': true,
             "routes":{
                 "hello/{name}": helloPage,
                 "query{?q}": queryPage,

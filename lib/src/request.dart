@@ -131,13 +131,13 @@ class Response{
     bool get isEmpty => (statusCode == null) && (body == null);
 
     void handleWith(RequestHandler h){
-        _logger.info("Request@${request.url} will be handled by RequestHandler@$h");
+        _logger.finest("Request@${request.url} will be handled by RequestHandler@$h");
         _handler = h;
     }
 
     Future handle() async {
         if (_handler == null){
-          _logger.info("Not handled: ${this.request}");
+          _logger.shout("Not handled: ${this.request}");
           notFound();
           return;
         }

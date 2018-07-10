@@ -103,7 +103,7 @@ class MessageChannel<T>{
 
   /// Handling recviced [ChannelSessionMessage], routing to [ChannelSession]
   _handleSessionMessage(ChannelSessionMessage data){
-    _mclog.info("Recvice a ChannelSessionMessage $data");
+    _mclog.finest("Recvice a ChannelSessionMessage $data");
     var key = data.key;
     if (_sessions.containsKey(key)){
       _sessions[key].input.add(data);
@@ -118,14 +118,14 @@ class MessageChannel<T>{
 
   /// Add a value to stream
   void send(T v){
-    _mclog.info("Send a message $v");
+    _mclog.finest("Send a message $v");
     controller.add(v);
   }
 
   /// Register a [ChannelSession] to [MessageChannel]  
   /// [MessageChannel] use `key` of [ChannelSeesion] to distinguish [ChannelSeesion]
   void registerSession(ChannelSession session){
-    _mclog.info("ChannelSession $session is registered to $name");
+    _mclog.finest("ChannelSession $session is registered to $name");
     _sessions[session.key] = session;
   }
 

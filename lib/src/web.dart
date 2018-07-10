@@ -1,6 +1,6 @@
 import "dart:async";
 import "./layer.dart";
-import "./logging.dart" show getLogger;
+import "./logging.dart" show getLogger, LoggingPlugin;
 import "./config.dart" show Config;
 import "./request.dart" show Request, buildRawResponse;
 import "./plugin.dart" show ChannelSession, MessageChannel, Plugin;
@@ -22,7 +22,7 @@ class Application {
     Map<String,CommandHandler> _commandHandlers;
     BaseRouter router;
     Config C;
-    bool isDebug = false;
+    bool isDebug;
 
     Application(this.C){
         lman = new LayerManager();
@@ -31,8 +31,9 @@ class Application {
         command = new ChannelSession(channel);
         _commandHandlers = {};
         channel.registerSession(command);
-        this._usePreloadPlugin();
+        isDebug = true;
         this._checkIfDebug();
+        this._usePreloadPlugin();
         command.stream.listen((data) => scheduleMicrotask(() => _handleCommand(data)));
     }
 
@@ -59,7 +60,7 @@ class Application {
     }
 
     buildHandler(){
-        _logger.info("Building handler");
+        _logger.finest("Building handler");
         var pl = const shelf.Pipeline();
         middlewares.forEach((shelf.Middleware m){
             pl = pl.addMiddleware(m);
@@ -75,10 +76,12 @@ class Application {
 
     void _usePreloadPlugin(){
         use(new RoutingPlugin());
+        use(new LoggingPlugin());
     }
 
     void _checkIfDebug(){
-      if (C['debug'] == true) isDebug = true;
+      _logger.config("Debug mode: ${C['debug']}");
+      if (C['debug'] == false) isDebug = false;
     }
 
     void registerCommandHandler(String c, CommandHandler handler){

@@ -111,7 +111,7 @@ class LayerState {
         _rawPointer = -1;
         memories = <String,dynamic>{};
         this.memories.addAll(this.pchain.global);
-        _logger.info("New state created: LayerState@${hashCode}");
+        _logger.finest("New state created: LayerState@${hashCode}");
     }
 
     Future start(List args, [Map<Symbol, dynamic> namedArgs]) async{
@@ -123,7 +123,7 @@ class LayerState {
         if ((rawPointer + 1) > pchain.list.length){
             return null;
         }
-        _logger.info("Next layer: point $rawPointer, layer $pointer, state $this");
+        _logger.finest("Next layer: point $rawPointer, layer $pointer, state $this");
         return pointer;
     }
 

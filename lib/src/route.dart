@@ -73,7 +73,7 @@ class Router implements BaseRouter<RouteSpec>{
     }
 
     void addSpec(RouteSpec spec){
-        _logger.info("New RouteSpec added: $spec");
+        _logger.finer("New RouteSpec added: $spec");
         rlist.add(spec);
     }
 
@@ -97,7 +97,7 @@ class Router implements BaseRouter<RouteSpec>{
    FunctionalLayer buildLayer(){
         return new FunctionalLayer.withName("RoutingLayer",(Request request) async{
             if(!(await accept(request))) {
-                await EventBus.happen("router.handlerNotHandled", [request]);
+                // await EventBus.happen("router.handlerNotHandled", [request]);
             }
         });
     }
@@ -112,7 +112,7 @@ class RoutingPlugin implements Plugin{
     if (app.router == null){
       app.router = app.C['router'] ?? new Router(<RouteSpec>[]);
       app.registerCommandHandler("Router.ready", (_) async{
-        _logger.info("Router.ready be touched");
+        _logger.finest("Router.ready be touched");
         if (app.router is Router){
           (app.C['routes'] as Map<String,Function>).forEach(
             (k,v) => app.router.addSpec(new RouteSpec(k, v))
