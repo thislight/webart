@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.0-beta.1
+- Update logging system, supported debug mode.Just add `'debug': true` to config.
+
 ## 0.2.0-beta.0
 - New `MessageChannel`, `ChannelSession`, `ChannelSeesionMessage` and `Command`
 - Return HTTP error 404 when handler not found
