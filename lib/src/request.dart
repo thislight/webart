@@ -1,6 +1,5 @@
 import "dart:convert" show JSON;
 import "package:shelf/shelf.dart" as shelf;
-import "./layer.dart" show LayerState;
 import "./context.dart" show Context;
 import "./web.dart" show Application;
 import "./config.dart" show Config;
@@ -15,18 +14,16 @@ final Logger _logger = getLogger("Request");
 class Request{
      shelf.Request _raw;
      Response _res;
-     LayerState _state;
      Application _app;
      Context _context;
 
-     Request(this._raw,this._state,this._app){
+     Request(this._raw,this._app){
          _res = new Response(this);
          _context = new Context(this);
      }
 
      shelf.Request get raw => _raw;
      
-     LayerState get state => _state;
 
      Application get app => _app;
 

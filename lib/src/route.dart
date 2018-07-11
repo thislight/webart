@@ -1,11 +1,10 @@
 import "./request.dart" show Request;
 import "./logging.dart" show getLogger;
-import "./layer.dart" show FunctionalLayer,Layer;
 import './handler.dart';
 import "package:uri_template/uri_template.dart";
 import "package:logging/logging.dart" show Logger;
 import "dart:async" show Future;
-import "./plugin.dart" show EventBus, Plugin;
+import "./plugin.dart" show Plugin;
 import './web.dart' show Application;
 
 final Logger _logger = getLogger("Router");
@@ -52,7 +51,6 @@ class RouteSpec implements BaseRouteSpec{
 abstract class BaseRouter<T extends BaseRouteSpec>{
     void addSpec(T spec);
     Future<bool> accept(Request request);
-    Layer get layer;
 }
 
 
@@ -93,17 +91,6 @@ class Router implements BaseRouter<RouteSpec>{
         }
         return isAccepted;
     }
-
-   FunctionalLayer buildLayer(){
-        return new FunctionalLayer.withName("RoutingLayer",(Request request) async{
-            if(!(await accept(request))) {
-                // await EventBus.happen("router.handlerNotHandled", [request]);
-            }
-        });
-    }
-
-    FunctionalLayer get layer => buildLayer();
-
 }
 
 
@@ -118,7 +105,6 @@ class RoutingPlugin implements Plugin{
             (k,v) => app.router.addSpec(new RouteSpec(k, v))
           );
         }
-        app.lman.chain.add(app.router.layer);
       });
     }
   }

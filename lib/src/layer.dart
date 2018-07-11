@@ -16,12 +16,14 @@ final Logger _logger = getLogger("Layer");
 /// }
 /// ````
 /// If you need a simple way to build a layer, see [FunctionalLayer]  
+@deprecated
 abstract class Layer {
     /// The entry of layer, must be async
     Future apply(List args, [Map<Symbol, dynamic> namedArgs]);
 }
 
 
+@deprecated
 class FunctionalLayer implements Layer {
     Function function;
     String _name;
@@ -57,6 +59,7 @@ class FunctionalLayer implements Layer {
 }
 
 
+@deprecated
 class LayerManager {
     LayerChain chain;
 
@@ -69,6 +72,7 @@ class LayerManager {
 }
 
 
+@deprecated
 class LayerChain {
     List<Layer> list;
     Map<String, dynamic> global;
@@ -99,9 +103,11 @@ class LayerChain {
 }
 
 
+@deprecated
 typedef void LayerForEachHandler(Layer layer);
 
 
+@deprecated
 class LayerState {
     LayerChain pchain;
     int _rawPointer;
@@ -140,9 +146,11 @@ class LayerState {
 }
 
 
+@deprecated
 typedef Future _DataMapper<T>(T data);
 
 
+@deprecated
 Future _untilNull<T>(Function f1,_DataMapper<T> f2) async{
     for(;;){
         dynamic v1 = Function.apply(f1,[]);

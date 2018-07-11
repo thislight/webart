@@ -1,5 +1,4 @@
 import "dart:async";
-import "./layer.dart";
 import "./logging.dart" show getLogger, LoggingPlugin;
 import "./config.dart" show Config;
 import "./request.dart" show Request, buildRawResponse;
@@ -15,37 +14,45 @@ final Logger _logger = getLogger("Application");
 
 
 class Application {
-    LayerManager lman;
     List<shelf.Middleware> middlewares;
     MessageChannel channel;
+    MessageChannel channelSync;
     ChannelSession<Command> command;
+    ChannelSession<Command> commandSync;
     Map<String,CommandHandler> _commandHandlers;
     BaseRouter router;
     Config C;
     bool isDebug;
 
     Application(this.C){
-        lman = new LayerManager();
         middlewares = <shelf.Middleware>[];
         channel = new MessageChannel("ApplicationMain");
         command = new ChannelSession(channel);
+        channelSync = new MessageChannel("ApplicationMainSync",sync: true);
+        commandSync = new ChannelSession(channelSync);
         _commandHandlers = {};
         channel.registerSession(command);
+        channelSync.registerSession(commandSync);
         isDebug = true;
         this._checkIfDebug();
         this._usePreloadPlugin();
         command.stream.listen((data) => scheduleMicrotask(() => _handleCommand(data)));
+        commandSync.stream.listen((data) => _handleCommand(data));
     }
 
-    _handleCommand(Command command){
+    void _handleCommand(Command command){
       var handler = _commandHandlers[command.command];
       if (handler != null) handler(command);
     }
 
     Future<shelf.Response> handler(shelf.Request raw) async{
-        LayerState currState = lman.newState;
-        Request request = new Request(raw,currState,this);
-        await currState.start([request]);
+        Request request = new Request(raw,this);
+        commandSync.send(
+          new Command("Application.beforeRequestHandling",args: {
+            'request': request,
+          })
+        );
+        await this.router.accept(request);
         return await buildRawResponse(request.response);
     }
 

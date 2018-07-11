@@ -88,9 +88,9 @@ class MessageChannel<T>{
   StreamController<T> controller;
   Map<String,ChannelSession> _sessions;
   
-  MessageChannel._init(this.name){
+  MessageChannel._init(this.name,{bool sync: false}){
     _mclog.info("MessageChannel $name is created");
-    controller = new StreamController<T>.broadcast();
+    controller = new StreamController<T>.broadcast(sync: sync);
     _sessions = {};
     stream = controller.stream;
     _channels[name] = this;
@@ -111,8 +111,9 @@ class MessageChannel<T>{
   }
 
   /// If the channel of `name` is cached, return the cached one, if not, return a new one.
-  factory MessageChannel(String name){
-    if(!_channels.containsKey(name)) return new MessageChannel._init(name);
+  /// argument `sync` will only take effect when the channel is non-cached
+  factory MessageChannel(String name, {bool sync: false}){
+    if(!_channels.containsKey(name)) return new MessageChannel._init(name,sync: sync);
     return _channels[name];
   }
 
