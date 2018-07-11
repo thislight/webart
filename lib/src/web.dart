@@ -55,20 +55,19 @@ class Application {
 
   Future start(String address, int port) async {
     command.send(new Command("Router.ready"));
-    return io.serve((buildHandler() as shelf.Handler), address, port).then((s) {
+    return io.serve(buildHandler(), address, port).then((s) {
       _logger.info("Service Started. $address:$port");
       return s;
     });
   }
 
-  shelf.Pipeline buildHandler() {
+  shelf.Handler buildHandler() {
     _logger.finest("Building handler");
-    var pl = const shelf.Pipeline();
+    shelf.Pipeline pl = const shelf.Pipeline();
     middlewares.forEach((shelf.Middleware m) {
-      pl = pl.addMiddleware(m);
+      pl.addMiddleware(m);
     });
-    pl = pl.addHandler(this.handler);
-    return pl;
+    return pl.addHandler(this.handler);
   }
 
   void use(Plugin p) {
