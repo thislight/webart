@@ -60,19 +60,19 @@ class Application {
         command.send(
           new Command("Router.ready")
         );
-        return io.serve(buildHandler(),address,port).then((s){
+        return io.serve((buildHandler() as shelf.Handler),address,port).then((s){
           _logger.info("Service Started. $address:$port");
           return s;
         });
     }
 
-    buildHandler(){
+    shelf.Pipeline buildHandler(){
         _logger.finest("Building handler");
         var pl = const shelf.Pipeline();
         middlewares.forEach((shelf.Middleware m){
             pl = pl.addMiddleware(m);
         });
-            pl = pl.addHandler(this.handler);
+        pl = pl.addHandler(this.handler);
         return pl;
     }
 
