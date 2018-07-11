@@ -7,6 +7,7 @@ import "dart:async" show Future;
 import "./logging.dart" show getLogger;
 import 'package:logging/logging.dart' show Logger;
 import './handler.dart';
+import './cmd.dart';
 
 final Logger _logger = getLogger("Request");
 
@@ -133,6 +134,11 @@ class Response{
     }
 
     Future handle() async {
+      request.app.commandSync.send(
+        new Command('Request.beforeHandling',args:{
+          'request': request
+        })
+      );
         if (_handler == null){
           _logger.shout("Not handled: ${this.request}");
           notFound();
