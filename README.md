@@ -1,8 +1,8 @@
 # web.dart
   A lightweight web framework for Dart.
 
-## Unstable
-  This library is unstable now, it doesn't has any test. Any discussion welcome!
+## WARNING: Limited Dart 2 support
+For some reasones, webart only offer limited dart 2 support.It does not mean any one feature can not run within Dart 2.Just because webart require more test on that.
 
 ## Features
 - Web server (Thanks [shelf](https://pub.dartlang.org/packages/shelf))
@@ -33,6 +33,7 @@ main(){
     // Create app
     Application app = new Application(
         new Config(<String, dynamic>{
+            "debug": true,
             "route":{
                 "": helloWorldHandler,
             }
@@ -40,9 +41,7 @@ main(){
     );
 
     // Start app
-    app.start("127.0.0.1", 8088).then((_){
-        print("Server started");
-    });
+    app.start("127.0.0.1", 8088);
 }
 
 // Define handler

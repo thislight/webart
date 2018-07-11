@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.2.0-beta.5
+- Fix some error while run on strong mode
+- Add some tests
+- Edit README
+
 ## 0.2.0-beta.4
 - Some fixes update
 
