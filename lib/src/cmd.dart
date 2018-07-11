@@ -2,12 +2,11 @@ import 'dart:async' show Future;
 
 typedef Future CommandHandler(Command command);
 
-
-class Command{
+class Command {
   String command;
-  Map<String,dynamic> args;
+  Map<String, dynamic> args;
 
-  Command(this.command,{this.args}){
+  Command(this.command, {this.args}) {
     if (args == null) args = const {};
   }
 

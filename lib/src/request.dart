@@ -11,153 +11,149 @@ import './cmd.dart';
 
 final Logger _logger = getLogger("Request");
 
+class Request {
+  shelf.Request _raw;
+  Response _res;
+  Application _app;
+  Context _context;
 
-class Request{
-     shelf.Request _raw;
-     Response _res;
-     Application _app;
-     Context _context;
+  Request(this._raw, this._app) {
+    _res = new Response(this);
+    _context = new Context(this);
+  }
 
-     Request(this._raw,this._app){
-         _res = new Response(this);
-         _context = new Context(this);
-     }
+  shelf.Request get raw => _raw;
 
-     shelf.Request get raw => _raw;
-     
+  Application get app => _app;
 
-     Application get app => _app;
+  Context get context => _context;
 
-     Context get context => _context;
+  Map<String, String> get headers => raw.headers;
 
-     Map<String, String> get headers => raw.headers;
+  String get method => raw.method;
 
-     String get method => raw.method;
+  String get mimeType => raw.mimeType;
 
-     String get mimeType => raw.mimeType;
+  Uri get url => raw.url;
 
-     Uri get url => raw.url;
-     
-     Future<String> get body => raw.readAsString();
+  Future<String> get body => raw.readAsString();
 
-     dynamic asJson() async => JSON.decode(await body);
-     
-     Response get response => _res;
-     Response get res => response;
+  dynamic asJson() async => JSON.decode(await body);
 
-     Config get C => app.C;
+  Response get response => _res;
+  Response get res => response;
 
-     String get path => url.path;
+  Config get C => app.C;
 
-     String toString() => "Request@$hashCode { method=$method, path=/$path }";
+  String get path => url.path;
 
-     String get handlerPath => raw.handlerPath;
+  String toString() => "Request@$hashCode { method=$method, path=/$path }";
 
-     Future on(String method, RequestHandler handler) async{
-         if (method.toLowerCase() == this.method.toLowerCase()){
-            await handler(this);
-         }
-     }
+  String get handlerPath => raw.handlerPath;
 
-     bool only(List<String> allowedMethods){
-         allowedMethods.map((String e) => e.toLowerCase());
-         if (allowedMethods.contains(this.method.toLowerCase())){
-             return true;
-         } else {
-             this.res.error(400);
-             return false;
-         }
-     }
+  Future on(String method, RequestHandler handler) async {
+    if (method.toLowerCase() == this.method.toLowerCase()) {
+      await handler(this);
+    }
+  }
+
+  bool only(List<String> allowedMethods) {
+    allowedMethods.map((String e) => e.toLowerCase());
+    if (allowedMethods.contains(this.method.toLowerCase())) {
+      return true;
+    } else {
+      this.res.error(400);
+      return false;
+    }
+  }
 }
 
+class Response {
+  String body;
+  Request request;
+  int statusCode;
+  Map<String, String> headers = {};
+  List<String> acceptedMethods = ['Get', 'Post', 'Options', 'Head'];
+  RequestHandler _handler;
 
-class Response{
-    String body;
-    Request request;
-    int statusCode;
-    Map<String, String> headers = {};
-    List<String> acceptedMethods = ['Get','Post','Options','Head'];
-    RequestHandler _handler;
+  Response(this.request) {
+    headers['Content-Type'] = 'text/html';
+    headers['Server'] = 'Dart, web.dart, shelf';
+    headers['Encoding'] = "UTF-8";
+  }
 
-    Response(this.request){
-        headers['Content-Type'] = 'text/html';
-        headers['Server'] = 'Dart, web.dart, shelf';
-        headers['Encoding'] = "UTF-8";
-    }
+  void ok(var body) {
+    statusCode = 200;
+    this.body = preprocessBody(body);
+  }
 
-    void ok(var body){
-        statusCode = 200;
-        this.body = preprocessBody(body);
-    }
+  void forbidden([var body]) => error(403, body);
 
-    void forbidden([var body]) => error(403,body);
+  void notFound([var body]) => error(404, body);
 
-    void notFound([var body]) => error(404,body);
+  void error(int code, [var body]) {
+    statusCode = code;
+    getTargetPage(body);
+  }
 
-    void error(int code, [var body]){
-        statusCode = code;
-        getTargetPage(body);
-    }
-
-    Future getTargetPage([var body]) async{
-        if (body != null){
-          body = preprocessBody(body);
-        } else {
-          if (request.app.isDebug){
-            body = '''
+  Future getTargetPage([var body]) async {
+    if (body != null) {
+      body = preprocessBody(body);
+    } else {
+      if (request.app.isDebug) {
+        body = '''
             Request: $request
             Status code: $statusCode
             Headlers: $headers
             Accepted methods: $acceptedMethods
             Handler = $_handler
             ''';
-          } else {
-            body = '';
-          }
-        }
+      } else {
+        body = '';
+      }
     }
+  }
 
-    String preprocessBody(var body){
-        if (body is String){
-            return body;
-        } else {
-            headers['Content-Type'] = "application/json";
-            return JSON.encode(body);
-        }
+  String preprocessBody(var body) {
+    if (body is String) {
+      return body;
+    } else {
+      headers['Content-Type'] = "application/json";
+      return JSON.encode(body);
     }
+  }
 
-    bool get isEmpty => (statusCode == null) && (body == null);
+  bool get isEmpty => (statusCode == null) && (body == null);
 
-    void handleWith(RequestHandler h){
-        _logger.finest("Request@${request.url} will be handled by RequestHandler@$h");
-        _handler = h;
+  void handleWith(RequestHandler h) {
+    _logger
+        .finest("Request@${request.url} will be handled by RequestHandler@$h");
+    _handler = h;
+  }
+
+  Future handle() async {
+    request.app.commandSync.send(
+        new Command('Request.beforeHandling', args: {'request': request}));
+    if (_handler == null) {
+      _logger.shout("Not handled: ${this.request}");
+      notFound();
+      return;
     }
-
-    Future handle() async {
-      request.app.commandSync.send(
-        new Command('Request.beforeHandling',args:{
-          'request': request
-        })
-      );
-        if (_handler == null){
-          _logger.shout("Not handled: ${this.request}");
-          notFound();
-          return;
-        }
-        await _handler(request);
-    }
+    await _handler(request);
+  }
 }
 
-
-Future<shelf.Response> buildRawResponse(Response response) async{
+Future<shelf.Response> buildRawResponse(Response response) async {
   await response.handle();
-  if (response.isEmpty){
+  if (response.isEmpty) {
     response.notFound();
-   }
-  if ((response.request.method.toLowerCase() == "options") && response.isEmpty){
-    response.headers['Allow'] = response.acceptedMethods.join(', '); 
+  }
+  if ((response.request.method.toLowerCase() == "options") &&
+      response.isEmpty) {
+    response.headers['Allow'] = response.acceptedMethods.join(', ');
     response.headers['Content-Length'] = "0";
     response.ok('');
   }
-  return new shelf.Response(response.statusCode, body: response.body, headers: response.headers);
+  return new shelf.Response(response.statusCode,
+      body: response.body, headers: response.headers);
 }

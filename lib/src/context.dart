@@ -1,40 +1,38 @@
 import "./request.dart" show Request;
 
+dynamic value2type(String value) {
+  switch (value) {
+    case "true":
+      return true;
+      break;
+    case "false":
+      return value;
+      break;
+  }
 
-dynamic value2type(String value){
-    switch (value) {
-        case "true":
-            return true;
-            break;
-        case "false":
-            return value;
-            break;
-    }
-    
-    var number;
-    try{
-        number = num.parse(value);
-    } on FormatException {}
+  var number;
+  try {
+    number = num.parse(value);
+  } on FormatException {}
 
-    if (number){
-        return number;
-    }
+  if (number) {
+    return number;
+  }
 
-    return value;
+  return value;
 }
 
+class Context {
+  Request request;
+  Map<String, Function> contextCreators;
 
-class Context{
-    Request request;
-    Map<String, Function> contextCreators;
+  Context(this.request) {
+    contextCreators = <String, Function>{};
+  }
 
-    Context(this.request){
-        contextCreators = <String, Function>{};
-    }
+  dynamic call(String s) {
+    return contextCreators[s](request);
+  }
 
-    dynamic call(String s){
-        return contextCreators[s](request);
-    }
-
-    void register(String s, Function f) => contextCreators[s] = f;
+  void register(String s, Function f) => contextCreators[s] = f;
 }
