@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.0-beta.3
+- Remove deprecated entries
+
 ## 0.2.0-beta.2
 - Mark Layer system as deprecated
 
