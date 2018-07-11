@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.0-beta.4
+- Some fixes update
+
 ## 0.2.0-beta.3
 - Remove deprecated entries
 
