@@ -101,8 +101,3 @@ class ChannelSessionMessage<T> {
 
   String toString() => "$key|$message";
 }
-
-dynamic originBack(Function h) => (List args) async {
-      await h(args);
-      return args;
-    };
