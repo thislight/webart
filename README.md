@@ -2,10 +2,10 @@
   A lightweight web framework for Dart.
 
 ## WARNING: Limited Dart 2 support
-For some reasones, webart only offer limited dart 2 support.It does not mean any one feature can not run within Dart 2.Just because webart require more test on that.
+For some reasones, webart only offer limited dart 2 support. It does not mean that no feature can run within Dart 2. Just because webart require more test on that.
 
 ## Features
-- Web server (Thanks [shelf](https://pub.dartlang.org/packages/shelf))
+- Web server (Thanks to [shelf](https://pub.dartlang.org/packages/shelf))
 - Plugin support
 - Router
 - Context support
@@ -51,9 +51,9 @@ Future helloWorldHandler(Request request) async{
 ````
 
 ## Document
-Now api documents aren't finished. But you can get a overview of this library.  
+Currently, API documents aren't finished. But you can get an overview of this library.  
 
-Documents will be build when new changes pushing or everyday(4:00 UTC+8).
+Documents will be built when new changes are pushed and on 4:00 (UTC+8) of everyday.
 
 [The document of branch master](https://thislight.gitlab.io/web.dart/doc/api)
 
