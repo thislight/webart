@@ -19,6 +19,9 @@ void main(){
     Application app;
     setUpAll(() async{
       app = await getApp();
+      app.commandSync.send(
+        new Command("TestCase.start")
+      );
     });
 
     test("handler can be requested", () async{
