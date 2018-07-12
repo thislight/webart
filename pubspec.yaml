@@ -1,5 +1,5 @@
 name: webart
-version: 0.2.0-beta.5
+version: 0.2.0
 description: A relax, simple lightweight non-sync web framework for dart, based on shelf.Just write down your art.
 homepage: https://gitlab.com/thislight/web.dart
 author: thisLight <l1589002388@gmail.com>

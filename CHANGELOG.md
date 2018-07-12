@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## 0.2.0
+- Release 0.2.0
+  - Fix performance problem while running handler, move `waitForResponse` to trash
+  - Add EventBus for plugin
+  - Redesign route system, allow using third party router
+  - Redesign layer system, get `Go` away and make it powerful
+  - A bit tests for EventBus
+  - Fix error that handler not handled
+  - Fix error that handler will be called twice
+  - return not found when not handler found
+  - Remove `LoggingLayer`
+  - `Request.on` changes to async
+  - New `MessageChannel`, `ChannelSession`, `ChannelSeesionMessage` and `Command`
+  - Return HTTP error 404 when handler not found
+  - Router will be fast if uri path is static (for example '/about')
+  - Builtin Router now work as a Plugin by `RoutingPlugin`, it also use third party router if given
+  - A dirty fix for uri template "" match all uri
+  - Package structure changed, all of Layer moved to single 'package:webart/layer.dart'
+  - Small change for example.
+  - Code opz.,remove unused imports and functions
+  - Mark EvevntBus as deprecated, it will be removed when 0.2.0 released.
+  - Update logging system, supported debug mode.Just add `'debug': true` to config.
+  - Mark Layer system as deprecated
+  - Remove deprecated entries
+  - Some fixes update
+  - Fix some error while run on strong mode
+  - Add some tests
+  - Edit README
+
 ## 0.2.0-beta.5
 - Fix some error while run on strong mode
 - Add some tests
