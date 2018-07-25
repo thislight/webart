@@ -1,5 +1,6 @@
 import "./web.dart" show Application;
 import './logging.dart';
+import './cmd.dart';
 import 'dart:async';
 
 abstract class Plugin {
@@ -86,8 +87,13 @@ class ChannelSession<T> {
     }));
   }
 
-  void send(T v) {
+  FutureOr<Null> send(T v) {
     messageChannel.send(new ChannelSessionMessage<T>(this.key, v));
+    if (v is Command && (v as Command).completer != null){
+      return (v as Command).future;
+    } else {
+      return null;
+    }
   }
 
   String toString() => "${messageChannel}:$key";
