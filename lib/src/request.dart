@@ -127,7 +127,7 @@ class Response {
 
   void handleWith(RequestHandler h) {
     _logger
-        .finest("Request@${request.url} will be handled by RequestHandler@$h");
+        .finest("$request will be handled by $h");
     _handler = h;
   }
 
