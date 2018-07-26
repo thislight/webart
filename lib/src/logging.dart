@@ -23,7 +23,7 @@ final CustomPrintAppender appender =
 Logger getLogger(String name) {
   var logger = new Logger(name);
   appender.attachLogger(logger);
-  if (!_isInDebug){
+  if (_isInDebug){
     logger.level = Level.ALL;
   }
   return logger;
@@ -34,6 +34,7 @@ bool _isInDebug = false;
 class LoggingPlugin extends Plugin {
   @override
   void init(Application app) {
+    hierarchicalLoggingEnabled = true;
     if (app.isDebug) {
       _isInDebug = true;
     }
