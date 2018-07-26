@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 0.2.1
+- Allow `Command` has a `Completer` to return a value
+- if `ChannelSession.send` will return the future of `Command`'s `Completer` if has
+- Fix example
+- Add `Application.ready` to touch some events must touch
+- some bug fixes 
+
 ## 0.2.0
 - Release 0.2.0
   - Fix performance problem while running handler, move `waitForResponse` to trash
