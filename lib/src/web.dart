@@ -54,11 +54,15 @@ class Application {
   }
 
   Future start(String address, int port) async {
-    command.send(new Command("Router.ready"));
+    ready();
     return io.serve(buildHandler(), address, port).then((s) {
       _logger.info("Service Started. $address:$port");
       return s;
     });
+  }
+
+  void ready(){
+    command.send(new Command("Router.ready"));
   }
 
   shelf.Handler buildHandler() {
