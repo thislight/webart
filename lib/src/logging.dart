@@ -23,14 +23,19 @@ final CustomPrintAppender appender =
 Logger getLogger(String name) {
   var logger = new Logger(name);
   appender.attachLogger(logger);
+  if (!_isInDebug){
+    logger.level = Level.ALL;
+  }
   return logger;
 }
+
+bool _isInDebug = false;
 
 class LoggingPlugin extends Plugin {
   @override
   void init(Application app) {
     if (app.isDebug) {
-      Logger.root.level = Level.ALL;
+      _isInDebug = true;
     }
   }
 }
