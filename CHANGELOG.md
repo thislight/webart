@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.2
+- Fix Dart SDK version
+
 ## 0.2.1
 - Allow `Command` has a `Completer` to return a value
 - `ChannelSession.send` will return the future of `Command`'s `Completer` if has
