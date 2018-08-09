@@ -17,7 +17,7 @@ class Application {
   MessageChannel channelSync;
   ChannelSession<Command> command;
   ChannelSession<Command> commandSync;
-  Map<String, CommandHandler> _commandHandlers;
+  Map<String, Set<CommandHandler>> _commandHandlers;
   BaseRouter router;
   Config C;
   bool isDebug;
@@ -40,15 +40,28 @@ class Application {
   }
 
   void _handleCommand(Command command) {
-    var handler = _commandHandlers[command.command];
-    if (handler != null) handler(command);
+    var handlers = _commandHandlers[command.command];
+    if (handlers != null && handlers.isNotEmpty){
+        if (handlers.length == 1){
+            handlers.first(command);
+        }else{
+            for (CommandHandler handler in handlers){
+                handler(command);
+            }
+        }
+    }
+    if (command.broadcastResult != null){
+        command.broadcastResult.end();
+    }
   }
 
   Future<shelf.Response> handler(shelf.Request raw) async {
     Request request = new Request(raw, this);
-    commandSync.send(new Command("Application.beforeRequestHandling", args: {
+    var c = new Command("Application.beforeRequestHandling", args: {
       'request': request,
-    }));
+    }, requireResult: true);
+    command.send(c);
+    await c.waitFor();
     await this.router.accept(request);
     return await buildRawResponse(request.response);
   }
@@ -85,11 +98,12 @@ class Application {
   }
 
   void _checkIfDebug() {
-    _logger.config("Debug mode: ${C['debug']}");
+    _logger.config("Debug mode: ${C['debug'] ?? false}");
     if (C['debug'] == false) isDebug = false;
   }
 
   void registerCommandHandler(String c, CommandHandler handler) {
-    _commandHandlers[c] = handler;
+      if (_commandHandlers[c] == null) _commandHandlers[c] = new Set();
+    _commandHandlers[c].add(handler);
   }
 }
