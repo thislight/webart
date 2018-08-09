@@ -77,8 +77,6 @@ class Response {
   RequestHandler _handler;
 
   Response(this.request) {
-    headers['Content-Type'] = 'text/html';
-    headers['Server'] = 'Dart, web.dart, shelf';
     headers['Encoding'] = "UTF-8";
   }
 
@@ -116,6 +114,11 @@ class Response {
 
   String preprocessBody(var body) {
     if (body is String) {
+      if (body.contains("<html>") && body.contains("</html>") && body.contains("<body>") && body.contains("</body>")) {
+          headers['Content-Type'] = "text/html";
+      } else if (body.length > 0) {
+          headers['Content-Type'] = "text/plain";   
+      }
       return body;
     } else {
       headers['Content-Type'] = "application/json";
@@ -149,11 +152,28 @@ Future<shelf.Response> buildRawResponse(Response response) async {
     response.notFound();
   }
   if ((response.request.method.toLowerCase() == "options") &&
-      response.isEmpty) {
-    response.headers['Allow'] = response.acceptedMethods.join(', ');
+      response.statusCode == 404) {
+    response.headers['Allow'] = response.acceptedMethods.map((s) => s.toUpperCase()).join(', ');
     response.headers['Content-Length'] = "0";
+    if (response.request.app.C['allow_global_cors'] ?? false)
+        _applyAccessControlAllowHeaders(response);
     response.ok('');
   }
-  return new shelf.Response(response.statusCode,
+  var raw = new shelf.Response(response.statusCode,
       body: response.body, headers: response.headers);
+  return raw;
+}
+
+
+void _applyAccessControlAllowHeaders(Response response){
+    response.headers['Access-Control-Allow-Origin'] = "*";
+    response.headers['Access-Control-Allow-Headers'] = response.request.headers['Access-Control-Request-Headers'] ?? const ['Content-Type'].join(', ');
+    response.headers['Access-Control-Allow-Methods'] = response.headers['Allow'] ?? response.acceptedMethods.map((s) => s.toUpperCase()).join(', ');
+}
+
+void allowCORSRequest(Request request, Map<String,String> exHeaders){
+    request.on("options", (request){
+        _applyAccessControlAllowHeaders(request.response);
+        request.response.ok('');
+    });
 }
