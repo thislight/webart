@@ -87,10 +87,11 @@ class ChannelSession<T> {
     }));
   }
 
-  FutureOr<Null> send(T v) {
+  dynamic send(T v) {
+      _mclog.finest("$this send $v");
     messageChannel.send(new ChannelSessionMessage<T>(this.key, v));
-    if (v is Command && (v as Command).completer != null){
-      return (v as Command).future;
+    if (v is Command && (v as Command).broadcastResult != null){
+      return (v as Command).broadcastResult;
     } else {
       return null;
     }
