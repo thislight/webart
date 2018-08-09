@@ -10,8 +10,9 @@ class Command {
   String command;
   Map<String, dynamic> args;
   bool requireResult;
+  bool includingLock;
 
-  Command(this.command, {this.args, this.requireResult: false, bool includingLock: false}) {
+  Command(this.command, {this.args, this.requireResult: false, bool this.includingLock: false}) {
     if (args == null) args = const {};
     if (requireResult) _addBroadcastResultsIfNoHas();
     if (includingLock) args['lock'] = new CommandLock();

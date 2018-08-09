@@ -50,7 +50,7 @@ class Application {
             }
         }
     }
-    if (command.args['lock'] != null){
+    if (command.includingLock){
         (command.args['lock'] as CommandLock).unlock();
         return;
     }
