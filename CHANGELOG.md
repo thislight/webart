@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 0.2.3
+- Fix response of method OPTIONS
+- add configure item `allow_global_cors` to Allow Global CORS
+- Remove custom sever header
+- Add function `allowCORSRequest` allow respond server headers that including some `Access-Control-Allow-*`
+- Add `BroadcastResults` to support that return value from a command
+- Add `CommandLock` to wait command done
+- Add optional param `includingLock` to Command for adding a `CommandLock` to `Command.args['lock']`
+- Redo BroadcastResults impl in `Command`, from `Command.broadcastResult` move to `Command.args['_broadcastResult']`
+- Remove command `Request.beforeHandling`
+- Now command `Application.beforeRequestHandling` will be runned before Routing and Handling
+
 ## 0.2.2
 - Fix Dart SDK version
 

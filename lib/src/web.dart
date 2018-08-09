@@ -50,8 +50,13 @@ class Application {
             }
         }
     }
-    if (command.broadcastResult != null){
-        command.broadcastResult.end();
+    if (command.args['lock'] != null){
+        (command.args['lock'] as CommandLock).unlock();
+        return;
+    }
+    if (command.requireResult){
+        command.args['_broadcastResult'].end();
+        return;
     }
   }
 
@@ -59,9 +64,9 @@ class Application {
     Request request = new Request(raw, this);
     var c = new Command("Application.beforeRequestHandling", args: {
       'request': request,
-    }, requireResult: true);
+    }, includingLock: true);
     command.send(c);
-    await c.waitFor();
+    await (c.args['lock'] as CommandLock).lock();
     await this.router.accept(request);
     return await buildRawResponse(request.response);
   }
