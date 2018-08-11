@@ -1,14 +1,14 @@
 # web.dart
   A lightweight web framework for Dart.
 
-## WARNING: Limited Dart 2 support
-For some reasones, webart only offer limited dart 2 support. It does not mean that no feature can run within Dart 2. Just because webart require more test on that.
+## WARNING: Dart 1.x support only
+Because some 3rd party packages only offer Dart 1.x support, this package could not support Dart 2 Strong mode.
 
 ## Features
 - Web server (Thanks to [shelf](https://pub.dartlang.org/packages/shelf))
-- Plugin support
+- Plugin
 - Router
-- Context support
+- Context
 
 ## Usage
 This example show the basic usage of web.dart
