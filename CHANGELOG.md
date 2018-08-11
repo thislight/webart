@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.4
+- HOTFIX: Remove 3rd package for Dart 2 support
+
 ## 0.2.3
 - Fix response of method OPTIONS
 - add configure item `allow_global_cors` to Allow Global CORS
