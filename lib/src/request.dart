@@ -140,7 +140,7 @@ class Response {
     if (_handler == null) {
       _logger.shout("Not handled: ${this.request}");
       notFound();
-      return;
+      return new Future.value();
     }
     await _handler(request);
   }
