@@ -10,6 +10,7 @@ main(){
                 "hello/{name}": helloPage,
                 "query{?q}": queryPage,
                 "json{?key,lang}": getJsonPage,
+                "class":(new MyRequestHandler()).handler,
                 "": homePage,
             }
         })
@@ -46,5 +47,20 @@ Future getJsonPage(Request request) async{
     };
     Map<String, String> param = request.context("urlparam");
     await request.on("get",(_) async => request.res.ok({ "result": data[param["key"]][param["lang"]]}));
+}
+
+class MyRequestHandler extends RequestHandlerBase{
+    String data = "OK";
+
+    Future get(Request request) async{
+        logger.info("GET FROM MYREQUESTHANDLER");
+        request.res.ok(data);
+    }
+
+    Future post(Request request) async{
+        data = await request.body;
+        logger.info("POST TO MYREQUESTHANDLER");
+        request.res.ok(data);
+    }
 }
 

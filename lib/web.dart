@@ -7,3 +7,4 @@ export "src/config.dart";
 export "src/context.dart";
 export "src/plugin.dart";
 export 'src/logging.dart' show getLogger;
+export 'src/class_handler.dart' show RequestHandlerBase;
