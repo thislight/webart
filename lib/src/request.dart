@@ -136,7 +136,7 @@ class Response {
 
   Future handle() async {
     request.app.commandSync.send(
-        new Command('Request.beforeHandling', args: {'request': request}));
+        new Command('Request.beforeHandling', args: {'request': request})); // Remove it in 0.3
     if (_handler == null) {
       _logger.shout("Not handled: ${this.request}");
       notFound();
@@ -147,7 +147,6 @@ class Response {
 }
 
 Future<shelf.Response> buildRawResponse(Response response) async {
-  await response.handle();
   if (response.isEmpty) {
     response.notFound();
   }

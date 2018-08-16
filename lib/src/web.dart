@@ -3,7 +3,7 @@ import "./logging.dart" show getLogger, LoggingPlugin;
 import "./config.dart" show Config;
 import "./request.dart" show Request, buildRawResponse;
 import "./plugin.dart" show ChannelSession, MessageChannel, Plugin;
-import "./route.dart" show BaseRouter, RoutingPlugin;
+import "./route.dart" show BaseRouter,RoutingPlugin;
 import './cmd.dart';
 import "package:shelf/shelf.dart" as shelf;
 import "package:shelf/shelf_io.dart" as io;
@@ -27,7 +27,7 @@ class Application {
     channel = new MessageChannel("ApplicationMain");
     command = new ChannelSession(channel);
     channelSync = new MessageChannel("ApplicationMainSync", sync: true);
-    commandSync = new ChannelSession(channelSync);
+    commandSync = new ChannelSession(channelSync);// TODO: Remove it in 0.3
     _commandHandlers = {};
     channel.registerSession(command);
     channelSync.registerSession(commandSync);
@@ -60,20 +60,27 @@ class Application {
     }
   }
 
-  Future<shelf.Response> handler(shelf.Request raw) async {
-    Request request = new Request(raw, this);
+  Future _doActionBeforeHandling(Request request) async{
     var c = new Command("Application.beforeRequestHandling", args: {
       'request': request,
     }, includingLock: true);
     command.send(c);
     await (c.args['lock'] as CommandLock).lock();
     await this.router.accept(request);
+  }
+
+  Future<shelf.Response> handler(shelf.Request raw) async {
+    Request request = new Request(raw, this);
+    await _doActionBeforeHandling(request);
+    await request.response.handle();
     return await buildRawResponse(request.response);
   }
 
   Future start(String address, int port) async {
     ready();
-    return io.serve(buildHandler(), address, port).then((s) {
+    return io.serve(buildHandler(), address, port,
+                    securityContext: C['securityContext']??null,
+                    backlog: C['backlog']??null).then((s) {
       _logger.info("Service Started. $address:$port");
       return s;
     });
