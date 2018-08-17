@@ -6,9 +6,6 @@ import './handler.dart';
 import 'package:logging/logging.dart';
 
 
-final Logger _logger = getLogger("RequestHandler");
-
-
 class RequestHandlerBase {
     static InstanceMirror _instance;
 
@@ -22,7 +19,7 @@ class RequestHandlerBase {
                 await future;
             }
         } catch (e) {
-            _logger.severe('A Error thrown by handler.',e);
+            logger.severe('A Error thrown by handler.',e);
         }
     }
 
