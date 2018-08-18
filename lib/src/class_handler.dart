@@ -6,6 +6,22 @@ import './handler.dart';
 import 'package:logging/logging.dart';
 
 
+/// The base of all class-based request handler.
+/// Extends it and finish method to handling request.  
+/// For example:
+/// ````
+/// class ExampleRequestHandler extends RequestHandlerBase{
+///     Future get(Request request){
+///         request.ok('');
+///     }
+///     
+///     Future options(Request request){
+///         allowCORSRequest(request,{});
+///     }
+/// }
+/// ````
+/// You can use [.logger] to log useful infomation.
+/// Tips: Class-based request handler will be slower than normal handler because it used dart:mirrors
 class RequestHandlerBase {
     static InstanceMirror _instance;
 
@@ -18,8 +34,11 @@ class RequestHandlerBase {
                 Future future = (futureMirror.reflectee as Future);
                 await future;
             }
-        } catch (e) {
-            logger.severe('A Error thrown by handler.',e);
+        } on NoSuchMethodError{
+            request.response.notFound();
+            logger.shout("No requested method: $request");
+        } catch (e){
+            logger.warning("A Error thown by handler",e);
         }
     }
 
@@ -30,6 +49,7 @@ class RequestHandlerBase {
         return _instance;
     }
 
+    /// Get the functional handler of the class-based request handler
     RequestHandler get handler => _handler;
 
     Logger get logger => getLogger(runtimeType.toString());
