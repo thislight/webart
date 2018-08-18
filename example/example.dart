@@ -10,7 +10,8 @@ main(){
                 "hello/{name}": helloPage,
                 "query{?q}": queryPage,
                 "json{?key,lang}": getJsonPage,
-                "class":(new MyRequestHandler()).handler,
+                "class":new MyRequestHandler(),
+                "class2": (new MyRequestHandler()).handler,
                 "": homePage,
             }
         })

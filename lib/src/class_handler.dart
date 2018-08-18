@@ -23,6 +23,16 @@ import 'package:logging/logging.dart';
 /// ````
 /// You can use [.logger] to log useful infomation.  
 /// Tips: Class-based request handler will be slower than normal handler because it used dart:mirrors
+/// 
+/// There has two way to add class-based request handler to router:
+/// ````
+/// new Config({
+///     'routes': {
+///         'way1': new ExampleRequestHandler(), // Way 1, it will add one function call when handle
+///         'way2': (new ExampleRequestHandler()).handler // Way 2
+///     }
+/// });
+/// ````
 class RequestHandlerBase {
     static InstanceMirror _instance;
 
@@ -54,4 +64,6 @@ class RequestHandlerBase {
     RequestHandler get handler => _handler;
 
     Logger get logger => getLogger(runtimeType.toString());
+
+    Future call(Request request) => handler(request);
 }
