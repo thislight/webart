@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 
 /// The base of all class-based request handler.
 /// Extends it and finish method to handling request.  
+/// 
 /// For example:
 /// ````
 /// class ExampleRequestHandler extends RequestHandlerBase{
@@ -20,7 +21,7 @@ import 'package:logging/logging.dart';
 ///     }
 /// }
 /// ````
-/// You can use [.logger] to log useful infomation.
+/// You can use [.logger] to log useful infomation.  
 /// Tips: Class-based request handler will be slower than normal handler because it used dart:mirrors
 class RequestHandlerBase {
     static InstanceMirror _instance;

@@ -11,6 +11,8 @@ import "package:logging/logging.dart" show Logger;
 
 final Logger _logger = getLogger("Application");
 
+
+/// The main entry of a Web Application
 class Application {
   List<shelf.Middleware> middlewares;
   MessageChannel channel;
@@ -76,6 +78,8 @@ class Application {
     return await buildRawResponse(request.response);
   }
 
+    /// Start a server  
+    /// You can set [securityContext] and [backlog] in config
   Future start(String address, int port) async {
     ready();
     return io.serve(buildHandler(), address, port,
@@ -86,6 +90,8 @@ class Application {
     });
   }
 
+    /// make server ready to handle request  
+    /// [Application.start] will be call it
   void ready(){
     command.send(new Command("Router.ready"));
   }
@@ -99,6 +105,7 @@ class Application {
     return pl.addHandler(this.handler);
   }
 
+    /// Use a [Plugin] in server
   void use(Plugin p) {
     _logger.info("Using ${p.toString()}");
     p.init(this);

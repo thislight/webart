@@ -3,6 +3,7 @@
 ## 0.2.6
 - Add class-based RequestHandler by `RequestHandlerBase`, just extends it and add `RequestHandlerBase.handler`(Instance) to routes
 - now support `sceurityContext` and `backlog` config item
+- Add new documents
 - Bugs fix
 
 ## 0.2.5

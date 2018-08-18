@@ -49,6 +49,7 @@ class Command {
 }
 
 
+/// Recvice many results by [Stream]
 class BroadcastResults<T> {
     StreamController<T> controller;
     Stream<T> get stream => controller.stream;
@@ -77,6 +78,7 @@ class BroadcastResults<T> {
 }
 
 
+/// A future-based lock for waiting some important code run, like singal value
 class CommandLock {
     int count;
     Completer _completer;
