@@ -1,7 +1,7 @@
 import "./request.dart" show Request;
 import "./logging.dart" show getLogger;
 import './handler.dart';
-import "package:uri_template/uri_template.dart";
+import "package:uri_template_r/uri_template.dart";
 import "package:logging/logging.dart" show Logger;
 import "dart:async" show Future;
 import "./plugin.dart" show Plugin;
