@@ -1,4 +1,4 @@
-import "dart:convert" show JSON;
+import "./dart2/json.dart" show JSON;
 import "package:shelf/shelf.dart" as shelf;
 import "./context.dart" show Context;
 import "./web.dart" show Application;
@@ -135,8 +135,6 @@ class Response {
   }
 
   Future handle() async {
-    request.app.commandSync.send(
-        new Command('Request.beforeHandling', args: {'request': request})); // Remove it in 0.3
     if (_handler == null) {
       _logger.shout("Not handled: ${this.request}");
       notFound();

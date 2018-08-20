@@ -1,8 +1,10 @@
 # web.dart
   A lightweight web framework for Dart.
 
-## WARNING: Dart 1.x support only
-Because some 3rd party packages only offer Dart 1.x support, this package could not support Dart 2 Strong mode.
+## WARNING: Although supported dart 2, please do not use that
+Dart 2 has bad performance because of Strong Mode, it just like Dart 1's Checked Mode...
+Dart 2 is slower than Dart 1.24.3 ~60%.
+Use the version ends of `-dart1c` to use this library with Dart 1.
 
 ## Features
 - Web server (Thanks to [shelf](https://pub.dartlang.org/packages/shelf))

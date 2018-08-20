@@ -19,7 +19,7 @@ void main(){
     Application app;
     setUpAll(() async{
       app = await getApp();
-      app.commandSync.send(
+      app.command.send(
         new Command("TestCase.start")
       );
     });
@@ -46,7 +46,7 @@ void main(){
 getApp() async{
   var app = new Application(new Config({
     'debug': true,
-    'routes': {
+    'routes': <String,RequestHandler>{
       'test1': test1Handler,
       'test2/test{?q}': uriTemplateSmokeTestHandler,
     }

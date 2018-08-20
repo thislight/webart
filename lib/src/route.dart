@@ -97,7 +97,7 @@ class RoutingPlugin implements Plugin {
       app.registerCommandHandler("Router.ready", (_) async {
         _logger.finest("Router.ready be touched");
         if (app.router is Router) {
-          (app.C['routes'] as Map<String, Function>)
+          (app.C['routes'] as Map<String, RequestHandler>)
               .forEach((k, v) => app.router.addSpec(new RouteSpec(k, v)));
         }
       });
