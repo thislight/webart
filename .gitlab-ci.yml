@@ -1,4 +1,4 @@
-image: google/dart:2.0.0
+image: google/dart:1.24.3
 
 before_script:
   - pub get
