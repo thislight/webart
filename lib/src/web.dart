@@ -2,7 +2,7 @@ import "dart:async";
 import "./logging.dart" show getLogger, LoggingPlugin;
 import "./config.dart" show Config;
 import "./request.dart" show Request, buildRawResponse;
-import "./plugin.dart" show ChannelSession, MessageChannel, Plugin;
+import "./plugin.dart" show ChannelSession,ChannelSessionMessage, MessageChannel, Plugin;
 import "./route.dart" show BaseRouter,RoutingPlugin;
 import './cmd.dart';
 import "package:shelf/shelf.dart" as shelf;
@@ -15,10 +15,8 @@ final Logger _logger = getLogger("Application");
 /// The main entry of a Web Application
 class Application {
   List<shelf.Middleware> middlewares;
-  MessageChannel channel;
-  MessageChannel channelSync;
+  MessageChannel<ChannelSessionMessage<Command>> channel;
   ChannelSession<Command> command;
-  ChannelSession<Command> commandSync;
   Map<String, Set<CommandHandler>> _commandHandlers;
   BaseRouter router;
   Config C;
@@ -28,17 +26,13 @@ class Application {
     middlewares = <shelf.Middleware>[];
     channel = new MessageChannel("ApplicationMain");
     command = new ChannelSession(channel);
-    channelSync = new MessageChannel("ApplicationMainSync", sync: true);
-    commandSync = new ChannelSession(channelSync);// TODO: Remove it in 0.3
     _commandHandlers = {};
     channel.registerSession(command);
-    channelSync.registerSession(commandSync);
     isDebug = true;
     this._checkIfDebug();
     this._usePreloadPlugin();
     command.stream
         .listen((data) => scheduleMicrotask(() => _handleCommand(data)));
-    commandSync.stream.listen((data) => _handleCommand(data));
   }
 
   void _handleCommand(Command command) {

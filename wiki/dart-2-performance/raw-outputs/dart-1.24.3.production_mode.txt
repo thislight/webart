@@ -1,0 +1,54 @@
+rubiconduck@rubicon ~> ab -c 512 -n 10000 -r http://127.0.0.1:8088/
+This is ApacheBench, Version 2.3 <$Revision: 1826891 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        dart:io
+Server Hostname:        127.0.0.1
+Server Port:            8088
+
+Document Path:          /
+Document Length:        12 bytes
+
+Concurrency Level:      512
+Time taken for tests:   4.909 seconds
+Complete requests:      10000
+Failed requests:        0
+Total transferred:      2540000 bytes
+HTML transferred:       120000 bytes
+Requests per second:    2037.15 [#/sec] (mean)
+Time per request:       251.332 [ms] (mean)
+Time per request:       0.491 [ms] (mean, across all concurrent requests)
+Transfer rate:          505.31 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   54 363.3      0    3103
+Processing:    14  108 374.0     42    3356
+Waiting:       13  108 374.0     42    3356
+Total:         32  162 667.4     42    4779
+
+Percentage of the requests served within a certain time (ms)
+  50%     42
+  66%     45
+  75%     55
+  80%     59
+  90%    111
+  95%    172
+  98%   4365
+  99%   4395
+ 100%   4779 (longest request)

@@ -90,7 +90,9 @@ class ChannelSession<T> {
   dynamic send(T v) {
       _mclog.finest("$this send $v");
     messageChannel.send(new ChannelSessionMessage<T>(this.key, v));
+    // ignore: unnecessary_cast
     if (v is Command && (v as Command).requireResult){
+        //ignore: unnecessary_cast
       return ((v as Command).args['_broadcastResult'] as BroadcastResults).waitUntillFinish();
     } else {
       return null;

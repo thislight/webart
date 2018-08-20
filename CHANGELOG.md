@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.3.0
+- Support Dart 2 Strong Mode
+
 ## 0.2.6
 - Add class-based RequestHandler by `RequestHandlerBase`, just extends it and add `RequestHandlerBase.handler`(Instance) to routes
 - now support `sceurityContext` and `backlog` config item
