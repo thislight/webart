@@ -2,7 +2,7 @@
   A lightweight web framework for Dart.
 
 ## WARNING: Although supported dart 2, please do not use that
-Dart 2 has bad performance because of Strong Mode, it just like Dart 1's Checked Mode...
+Dart 2 has bad performance because of Strong Mode, seems like it just a another name of Dart 1's Checked Mode...
 Dart 2 is slower than Dart 1.24.3 ~60%.
 Use the version ends of `-dart1c` to use this library with Dart 1.
 
